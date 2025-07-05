@@ -6,6 +6,8 @@ import Navbar from './navbar';
 import HeroSection from './hero-section';
 import WhyChooseSection from './reason-section';
 import PopularDestinationsSection from './popular-destionation-section';
+import FAQSection from './faq-section';
+import FooterSection from './footer';
 
 const HomepageViews: React.FC = () => {
     return (
@@ -15,6 +17,8 @@ const HomepageViews: React.FC = () => {
             <ToursSection />
             <WhyChooseSection />
             <PopularDestinationsSection />
+            <FAQSection />
+            <FooterSection />
         </Box>
     );
 };

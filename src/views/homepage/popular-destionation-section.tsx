@@ -204,7 +204,6 @@ const PopularDestinationsSection: React.FC = () => {
                             Jelajahi destinasi wisata terfavorit di Indonesia yang wajib dikunjungi
                         </Typography>
 
-                        {/* Loading skeleton */}
                         <Paper
                             elevation={0}
                             sx={{
