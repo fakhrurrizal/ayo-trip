@@ -1,4 +1,3 @@
-import { getDefaultLayout } from '@/components'
 import { NextPageWithLayout } from '@/utils'
 import Link from 'next/link'
 
@@ -23,5 +22,4 @@ const ErrorPage: NextPageWithLayout = () => {
     )
 }
 
-ErrorPage.getLayout = getDefaultLayout
 export default ErrorPage
