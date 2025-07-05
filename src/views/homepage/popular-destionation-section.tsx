@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     Box,
     Container,
@@ -10,11 +10,9 @@ import {
     Button,
     Chip,
     Stack,
-    Tab,
-    Tabs,
     Paper,
     IconButton,
-    Backdrop
+    Backdrop,
 } from '@mui/material';
 import { Icon } from '@iconify/react';
 
@@ -41,7 +39,7 @@ interface Destination {
 const PopularDestinationsSection: React.FC = () => {
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
     const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
-    const [isTabsReady, setIsTabsReady] = useState(false);
+    const [isClient, setIsClient] = useState(false);
 
     const categories: Category[] = [
         { id: 0, name: 'Semua', icon: 'mdi:earth' },
@@ -150,36 +148,93 @@ const PopularDestinationsSection: React.FC = () => {
         }
     ];
 
-    // UseEffect to ensure tabs are ready
+    // Client-side only rendering untuk menghindari hydration issues
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsTabsReady(true);
-        }, 100);
-
-        return () => clearTimeout(timer);
+        setIsClient(true);
     }, []);
 
-    const handleCategoryChange = (event: React.SyntheticEvent, newValue: number): void => {
-        if (newValue !== null && newValue !== undefined) {
-            setSelectedCategory(newValue);
-        }
-    };
+    const handleCategoryChange = useCallback((categoryId: number) => {
+        setSelectedCategory(categoryId);
+    }, []);
 
     const filteredDestinations: Destination[] = selectedCategory === 0
         ? destinations
         : destinations.filter(dest => dest.category === categories[selectedCategory]?.name);
 
-    const handleDestinationClick = (destination: Destination): void => {
+    const handleDestinationClick = useCallback((destination: Destination) => {
         setSelectedDestination(destination);
-    };
+    }, []);
 
-    const handleCloseModal = (): void => {
+    const handleCloseModal = useCallback(() => {
         setSelectedDestination(null);
-    };
+    }, []);
 
-    const handleModalContentClick = (e: React.MouseEvent): void => {
+    const handleModalContentClick = useCallback((e: React.MouseEvent) => {
         e.stopPropagation();
-    };
+    }, []);
+
+    // Render loading state untuk SSR
+    if (!isClient) {
+        return (
+            <Box sx={{ py: 8, backgroundColor: '#f8fafc' }}>
+                <Container maxWidth="xl">
+                    <Box sx={{ textAlign: 'center', mb: 6 }}>
+                        <Typography
+                            variant="h3"
+                            component="h2"
+                            sx={{
+                                fontWeight: 'bold',
+                                color: '#1e293b',
+                                mb: 2,
+                                fontSize: { xs: '1.875rem', md: '2.5rem' }
+                            }}
+                        >
+                            Destinasi Populer
+                        </Typography>
+                        <Typography
+                            variant="body1"
+                            sx={{
+                                color: '#64748b',
+                                fontSize: '1.1rem',
+                                maxWidth: '600px',
+                                mx: 'auto',
+                                mb: 4
+                            }}
+                        >
+                            Jelajahi destinasi wisata terfavorit di Indonesia yang wajib dikunjungi
+                        </Typography>
+
+                        {/* Loading skeleton */}
+                        <Paper
+                            elevation={0}
+                            sx={{
+                                display: 'inline-block',
+                                borderRadius: 3,
+                                border: '1px solid #e2e8f0',
+                                overflow: 'hidden',
+                                p: 2
+                            }}
+                        >
+                            <Box sx={{ display: 'flex', gap: 1 }}>
+                                {[...Array(5)].map((_, index) => (
+                                    <Box
+                                        key={index}
+                                        sx={{
+                                            width: 100,
+                                            height: 32,
+                                            backgroundColor: '#f1f5f9',
+                                            borderRadius: 2,
+                                            animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                                        }}
+                                    />
+                                ))}
+                            </Box>
+                        </Paper>
+                    </Box>
+                </Container>
+            </Box>
+        );
+    }
 
     return (
         <Box sx={{ py: 8, backgroundColor: '#f8fafc' }}>
@@ -211,59 +266,59 @@ const PopularDestinationsSection: React.FC = () => {
                         Jelajahi destinasi wisata terfavorit di Indonesia yang wajib dikunjungi
                     </Typography>
 
-                    {/* Category Tabs */}
-                    {isTabsReady && (
-                        <Paper
-                            elevation={0}
+                    {/* Category Buttons - Mengganti Tabs dengan ButtonGroup */}
+                    <Paper
+                        elevation={0}
+                        sx={{
+                            display: 'inline-block',
+                            borderRadius: 3,
+                            border: '1px solid #e2e8f0',
+                            overflow: 'hidden',
+                            p: 1
+                        }}
+                    >
+                        <Box
                             sx={{
-                                display: 'inline-block',
-                                borderRadius: 3,
-                                border: '1px solid #e2e8f0',
-                                overflow: 'hidden'
+                                display: 'flex',
+                                gap: 1,
+                                flexWrap: 'wrap',
+                                justifyContent: 'center',
+                                alignItems: 'center'
                             }}
                         >
-                            <Tabs
-                                value={selectedCategory}
-                                onChange={handleCategoryChange}
-                                variant="scrollable"
-                                scrollButtons="auto"
-                                allowScrollButtonsMobile
-                                sx={{
-                                    minHeight: 56,
-                                    '& .MuiTabs-indicator': {
-                                        backgroundColor: '#0ea5e9',
-                                        height: 3
-                                    },
-                                    '& .MuiTabs-flexContainer': {
-                                        minHeight: 56
-                                    }
-                                }}
-                            >
-                                {categories.map((category: Category) => (
-                                    <Tab
-                                        key={category.id}
-                                        value={category.id}
-                                        label={
-                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                                <Icon icon={category.icon} width={20} height={20} />
-                                                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                                    {category.name}
-                                                </Typography>
-                                            </Box>
-                                        }
-                                        sx={{
-                                            textTransform: 'none',
-                                            minWidth: 120,
-                                            color: '#64748b',
-                                            '&.Mui-selected': {
-                                                color: '#0ea5e9'
+                            {categories.map((category: Category) => (
+                                <Button
+                                    key={category.id}
+                                    onClick={() => handleCategoryChange(category.id)}
+                                    variant={selectedCategory === category.id ? 'contained' : 'text'}
+                                    startIcon={<Icon icon={category.icon} width={20} height={20} />}
+                                    sx={{
+                                        textTransform: 'none',
+                                        minWidth: 120,
+                                        height: 40,
+                                        borderRadius: 2,
+                                        fontWeight: 'bold',
+                                        ...(selectedCategory === category.id
+                                            ? {
+                                                backgroundColor: '#0ea5e9',
+                                                color: 'white',
+                                                '&:hover': {
+                                                    backgroundColor: '#0284c7'
+                                                }
                                             }
-                                        }}
-                                    />
-                                ))}
-                            </Tabs>
-                        </Paper>
-                    )}
+                                            : {
+                                                color: '#64748b',
+                                                '&:hover': {
+                                                    backgroundColor: '#f1f5f9'
+                                                }
+                                            })
+                                    }}
+                                >
+                                    {category.name}
+                                </Button>
+                            ))}
+                        </Box>
+                    </Paper>
                 </Box>
 
                 {/* Destinations Grid */}
@@ -432,12 +487,16 @@ const PopularDestinationsSection: React.FC = () => {
             </Container>
 
             {/* Modal for Destination Detail */}
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={Boolean(selectedDestination)}
-                onClick={handleCloseModal}
-            >
-                {selectedDestination && (
+            {selectedDestination && (
+                <Backdrop
+                    sx={{
+                        color: '#fff',
+                        zIndex: (theme) => theme.zIndex.drawer + 1,
+                        backdropFilter: 'blur(4px)'
+                    }}
+                    open={Boolean(selectedDestination)}
+                    onClick={handleCloseModal}
+                >
                     <Paper
                         sx={{
                             maxWidth: 600,
@@ -445,7 +504,8 @@ const PopularDestinationsSection: React.FC = () => {
                             maxHeight: '80vh',
                             overflow: 'auto',
                             borderRadius: 3,
-                            p: 0
+                            p: 0,
+                            m: 2
                         }}
                         onClick={handleModalContentClick}
                     >
@@ -488,7 +548,7 @@ const PopularDestinationsSection: React.FC = () => {
                                 {selectedDestination.description}
                             </Typography>
 
-                            <Stack direction="row" spacing={1} sx={{ mb: 3, flexWrap: 'wrap' }}>
+                            <Stack direction="row" spacing={1} sx={{ mb: 3, flexWrap: 'wrap', gap: 1 }}>
                                 {selectedDestination.tags.map((tag: string, index: number) => (
                                     <Chip
                                         key={index}
@@ -548,8 +608,8 @@ const PopularDestinationsSection: React.FC = () => {
                             </Stack>
                         </Box>
                     </Paper>
-                )}
-            </Backdrop>
+                </Backdrop>
+            )}
         </Box>
     );
 };
