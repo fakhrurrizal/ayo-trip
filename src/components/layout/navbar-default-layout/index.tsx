@@ -66,22 +66,7 @@ const Navbar: React.FC<NavbarProps> = (Props: NavbarProps) => {
 
     if (!currentTime) return null;
 
-    const TimeDisplay = () => {
-        const [currentTime, setCurrentTime] = useState<string | null>(null);
 
-        useEffect(() => {
-            setCurrentTime(dayjs().format('DD MMMM YYYY HH:mm:ss'));
-            const interval = setInterval(() => {
-                setCurrentTime(dayjs().format('DD MMMM YYYY HH:mm:ss'));
-            }, 1000);
-
-            return () => clearInterval(interval);
-        }, []);
-
-        return currentTime ? (
-            <p className='text-pr-8 break-keep text-sm font-bold'>{currentTime}</p>
-        ) : null;
-    };
 
     return (
         <>
