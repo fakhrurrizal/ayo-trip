@@ -329,7 +329,7 @@ const FooterSection: React.FC = () => {
                             textAlign: { xs: 'center', md: 'left' },
                         }}
                     >
-                        © 2024 AyoTrip. All rights reserved. | Dibuat dengan ❤️ untuk petualangan Anda
+                        © 2025 AyoTrip. All rights reserved. | Dibuat dengan ❤️ untuk petualangan Anda
                     </Typography>
 
                     <Stack
