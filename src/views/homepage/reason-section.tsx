@@ -190,17 +190,18 @@ const WhyChooseSection = () => {
                             color: '#1e293b',
                             mb: 1,
                             textAlign: 'center',
-                            fontSize: { xs: '1.5rem', md: '2rem' }
+                            fontSize: { xs: '1.5rem', md: '2rem' },
                         }}
                     >
                         Apa Kata Mereka?
                     </Typography>
+
                     <Typography
                         variant="body1"
                         sx={{
                             color: '#64748b',
                             textAlign: 'center',
-                            mb: 4
+                            mb: 4,
                         }}
                     >
                         Testimoni dari traveler yang telah merasakan pengalaman bersama kami
@@ -209,63 +210,67 @@ const WhyChooseSection = () => {
                     <Grid container spacing={4}>
                         {testimonials.map((testimonial) => (
                             <Grid item xs={12} md={4} key={testimonial.id}>
-                                <Paper
-                                    elevation={0}
-                                    sx={{
-                                        p: 4,
-                                        borderRadius: 3,
-                                        backgroundColor: '#ffffff',
-                                        border: '1px solid #e2e8f0'
-                                    }}
-                                >
-                                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                                        <Avatar
-                                            src={testimonial.avatar}
-                                            sx={{ width: 50, height: 50, mr: 2 }}
-                                        />
-                                        <Box>
-                                            <Typography
-                                                variant="subtitle1"
-                                                sx={{ fontWeight: 'bold', color: '#1e293b' }}
-                                            >
-                                                {testimonial.name}
-                                            </Typography>
-                                            <Typography
-                                                variant="body2"
-                                                sx={{ color: '#64748b' }}
-                                            >
-                                                {testimonial.location}
-                                            </Typography>
-                                        </Box>
-                                    </Box>
-
-                                    <Stack direction="row" spacing={0.5} sx={{ mb: 2 }}>
-                                        {[...Array(testimonial.rating)].map((_, index) => (
-                                            <Icon
-                                                key={index}
-                                                icon="mdi:star"
-                                                width={18}
-                                                height={18}
-                                                color="#fbbf24"
-                                            />
-                                        ))}
-                                    </Stack>
-
-                                    <Typography
-                                        variant="body2"
+                                <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                                    <Paper
+                                        elevation={0}
                                         sx={{
-                                            color: '#475569',
-                                            fontStyle: 'italic',
-                                            lineHeight: 1.6
+                                            p: 4,
+                                            borderRadius: 3,
+                                            backgroundColor: '#ffffff',
+                                            border: '1px solid #e2e8f0',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            height: '100%',
                                         }}
                                     >
-                                        "{testimonial.comment}"
-                                    </Typography>
-                                </Paper>
+                                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                                            <Avatar
+                                                src={testimonial.avatar}
+                                                sx={{ width: 50, height: 50, mr: 2 }}
+                                            />
+                                            <Box>
+                                                <Typography
+                                                    variant="subtitle1"
+                                                    sx={{ fontWeight: 'bold', color: '#1e293b' }}
+                                                >
+                                                    {testimonial.name}
+                                                </Typography>
+                                                <Typography variant="body2" sx={{ color: '#64748b' }}>
+                                                    {testimonial.location}
+                                                </Typography>
+                                            </Box>
+                                        </Box>
+
+                                        <Stack direction="row" spacing={0.5} sx={{ mb: 2 }}>
+                                            {[...Array(testimonial.rating)].map((_, index) => (
+                                                <Icon
+                                                    key={index}
+                                                    icon="mdi:star"
+                                                    width={18}
+                                                    height={18}
+                                                    color="#fbbf24"
+                                                />
+                                            ))}
+                                        </Stack>
+
+                                        <Typography
+                                            variant="body2"
+                                            sx={{
+                                                color: '#475569',
+                                                fontStyle: 'italic',
+                                                lineHeight: 1.6,
+                                                mt: 'auto',
+                                            }}
+                                        >
+                                            "{testimonial.comment}"
+                                        </Typography>
+                                    </Paper>
+                                </Box>
                             </Grid>
                         ))}
                     </Grid>
                 </Box>
+
 
                 {/* CTA Section */}
                 <Box sx={{ textAlign: 'center', mt: 8 }}>
