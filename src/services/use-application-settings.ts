@@ -30,10 +30,12 @@ const defaultValue: ApplicationSettings = {
 }
 
 const getInitialState: () => ApplicationSettings = () => {
-    let storedData
+    let storedData: string | null = null
 
     try {
-        storedData = localStorage.getItem(localKey.application_settings)
+        if (typeof window !== 'undefined') {
+            storedData = localStorage.getItem(localKey.application_settings)
+        }
     } catch (error) {
         storedData = null
         console.log(error)

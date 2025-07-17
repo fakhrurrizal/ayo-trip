@@ -16,17 +16,15 @@ const normalSideBarWidth = 250
 const miniSideBarWidth = 60
 
 export const DefaultLayout = ({ children }: { children: ReactNode }) => {
-
-    const { refetch: getMe, } = useQuery({
+    const { refetch: getMe } = useQuery({
         queryFn: async () => {
-            const res = await axiosInterceptor.get<ResponseGetMe>(getApi('get_me'),)
+            const res = await axiosInterceptor.get<ResponseGetMe>(getApi('get_me'))
 
             return res.data
         },
         queryKey: [getApi('get_me')],
         enabled: false,
     })
-
 
     const isExpandDrawer = useApplicationSettings(state => state.value.expandSidebar)
 
@@ -42,12 +40,9 @@ export const DefaultLayout = ({ children }: { children: ReactNode }) => {
         getMe()
     }, [getMe])
 
-
     return (
         <>
-            <Navbar
-                drawerWidth={drawerWidth}
-            />
+            <Navbar drawerWidth={drawerWidth} />
 
             <Box
                 component='main'
@@ -75,7 +70,6 @@ export const DefaultLayout = ({ children }: { children: ReactNode }) => {
             >
                 {children}
             </Box>
-
         </>
     )
 }

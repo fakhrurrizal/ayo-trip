@@ -1,15 +1,7 @@
 // components/HeroSection.tsx
-import React from 'react';
-import {
-    Box,
-    Container,
-    Typography,
-    TextField,
-    InputAdornment,
-    IconButton,
-    Paper
-} from '@mui/material';
-import { Icon } from '@iconify/react';
+import React from 'react'
+import { Box, Container, Typography, TextField, InputAdornment, IconButton, Paper } from '@mui/material'
+import { Icon } from '@iconify/react'
 
 const HeroSection: React.FC = () => {
     return (
@@ -31,23 +23,23 @@ const HeroSection: React.FC = () => {
                     right: 0,
                     bottom: 0,
                     background: 'linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(59, 130, 246, 0.5))',
-                    zIndex: 1
-                }
+                    zIndex: 1,
+                },
             }}
         >
             <Container
-                maxWidth="lg"
+                maxWidth='lg'
                 sx={{
                     position: 'relative',
                     zIndex: 2,
                     textAlign: 'center',
-                    py: 8
+                    py: 8,
                 }}
             >
                 {/* Main Heading */}
                 <Typography
-                    variant="h1"
-                    component="h1"
+                    variant='h1'
+                    component='h1'
                     sx={{
                         fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4.5rem' },
                         fontWeight: 'bold',
@@ -55,14 +47,14 @@ const HeroSection: React.FC = () => {
                         mb: 2,
                         textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
                         fontFamily: '"Poppins", sans-serif',
-                        lineHeight: 1.2
+                        lineHeight: 1.2,
                     }}
                 >
                     Temukan Tempat Baru, Buat
                 </Typography>
                 <Typography
-                    variant="h1"
-                    component="h1"
+                    variant='h1'
+                    component='h1'
                     sx={{
                         fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4.5rem' },
                         fontWeight: 'bold',
@@ -70,7 +62,7 @@ const HeroSection: React.FC = () => {
                         mb: 4,
                         textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
                         fontFamily: '"Poppins", sans-serif',
-                        lineHeight: 1.2
+                        lineHeight: 1.2,
                     }}
                 >
                     Kenangan Tak Terlupakan
@@ -85,47 +77,47 @@ const HeroSection: React.FC = () => {
                         borderRadius: 4,
                         overflow: 'hidden',
                         background: 'rgba(255, 255, 255, 0.95)',
-                        backdropFilter: 'blur(10px)'
+                        backdropFilter: 'blur(10px)',
                     }}
                 >
                     <TextField
                         fullWidth
-                        placeholder="Cari destinasi impianmu..."
-                        variant="outlined"
+                        placeholder='Cari destinasi impianmu...'
+                        variant='outlined'
                         InputProps={{
                             endAdornment: (
-                                <InputAdornment position="end">
+                                <InputAdornment position='end'>
                                     <IconButton
-                                        edge="end"
+                                        edge='end'
                                         sx={{
                                             backgroundColor: '#0ea5e9',
                                             color: 'white',
                                             '&:hover': {
-                                                backgroundColor: '#0284c7'
+                                                backgroundColor: '#0284c7',
                                             },
                                             borderRadius: 2,
-                                            p: 1.5
+                                            p: 1.5,
                                         }}
                                     >
-                                        <Icon icon="mdi:magnify" width={24} height={24} />
+                                        <Icon icon='mdi:magnify' width={24} height={24} />
                                     </IconButton>
                                 </InputAdornment>
                             ),
                             sx: {
                                 '& .MuiOutlinedInput-notchedOutline': {
-                                    border: 'none'
+                                    border: 'none',
                                 },
                                 '& .MuiInputBase-input': {
                                     py: 2,
                                     px: 3,
-                                    fontSize: '1.1rem'
-                                }
-                            }
+                                    fontSize: '1.1rem',
+                                },
+                            },
                         }}
                         sx={{
                             '& .MuiOutlinedInput-root': {
-                                borderRadius: 4
-                            }
+                                borderRadius: 4,
+                            },
                         }}
                     />
                 </Paper>
@@ -137,25 +129,25 @@ const HeroSection: React.FC = () => {
                         justifyContent: 'center',
                         flexWrap: 'wrap',
                         gap: 4,
-                        mt: 6
+                        mt: 6,
                     }}
                 >
                     <Box sx={{ textAlign: 'center' }}>
                         <Typography
-                            variant="h4"
+                            variant='h4'
                             sx={{
                                 color: 'white',
                                 fontWeight: 'bold',
-                                textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'
+                                textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
                             }}
                         >
                             100+
                         </Typography>
                         <Typography
-                            variant="body1"
+                            variant='body1'
                             sx={{
                                 color: 'rgba(255, 255, 255, 0.9)',
-                                textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)'
+                                textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)',
                             }}
                         >
                             Destinasi
@@ -163,20 +155,20 @@ const HeroSection: React.FC = () => {
                     </Box>
                     <Box sx={{ textAlign: 'center' }}>
                         <Typography
-                            variant="h4"
+                            variant='h4'
                             sx={{
                                 color: 'white',
                                 fontWeight: 'bold',
-                                textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'
+                                textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
                             }}
                         >
                             50+
                         </Typography>
                         <Typography
-                            variant="body1"
+                            variant='body1'
                             sx={{
                                 color: 'rgba(255, 255, 255, 0.9)',
-                                textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)'
+                                textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)',
                             }}
                         >
                             Open Trip
@@ -184,20 +176,20 @@ const HeroSection: React.FC = () => {
                     </Box>
                     <Box sx={{ textAlign: 'center' }}>
                         <Typography
-                            variant="h4"
+                            variant='h4'
                             sx={{
                                 color: 'white',
                                 fontWeight: 'bold',
-                                textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'
+                                textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
                             }}
                         >
                             1000+
                         </Typography>
                         <Typography
-                            variant="body1"
+                            variant='body1'
                             sx={{
                                 color: 'rgba(255, 255, 255, 0.9)',
-                                textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)'
+                                textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)',
                             }}
                         >
                             Happy Traveler
@@ -214,7 +206,7 @@ const HeroSection: React.FC = () => {
                     left: '50%',
                     transform: 'translateX(-50%)',
                     zIndex: 2,
-                    animation: 'bounce 2s infinite'
+                    animation: 'bounce 2s infinite',
                 }}
             >
                 <IconButton
@@ -222,29 +214,33 @@ const HeroSection: React.FC = () => {
                         color: 'white',
                         fontSize: '2rem',
                         '&:hover': {
-                            backgroundColor: 'rgba(255, 255, 255, 0.1)'
-                        }
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        },
                     }}
                 >
-                    <Icon icon="mdi:chevron-down" width={32} height={32} />
+                    <Icon icon='mdi:chevron-down' width={32} height={32} />
                 </IconButton>
             </Box>
 
             <style jsx>{`
-        @keyframes bounce {
-          0%, 20%, 50%, 80%, 100% {
-            transform: translateY(0) translateX(-50%);
-          }
-          40% {
-            transform: translateY(-10px) translateX(-50%);
-          }
-          60% {
-            transform: translateY(-5px) translateX(-50%);
-          }
-        }
-      `}</style>
+                @keyframes bounce {
+                    0%,
+                    20%,
+                    50%,
+                    80%,
+                    100% {
+                        transform: translateY(0) translateX(-50%);
+                    }
+                    40% {
+                        transform: translateY(-10px) translateX(-50%);
+                    }
+                    60% {
+                        transform: translateY(-5px) translateX(-50%);
+                    }
+                }
+            `}</style>
         </Box>
-    );
-};
+    )
+}
 
-export default HeroSection;
+export default HeroSection

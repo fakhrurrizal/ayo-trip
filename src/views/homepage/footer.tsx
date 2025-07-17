@@ -1,4 +1,4 @@
-import { Icon } from '@iconify/react';
+import { Icon } from '@iconify/react'
 import {
     Box,
     Chip,
@@ -11,32 +11,30 @@ import {
     ListItemIcon,
     ListItemText,
     Stack,
-    Typography
-} from '@mui/material';
-import React from 'react';
+    Typography,
+} from '@mui/material'
+import React from 'react'
 
 // Type definitions
 interface FooterLink {
-    label: string;
-    href: string;
-    icon?: string;
+    label: string
+    href: string
+    icon?: string
 }
 
 interface FooterSection {
-    title: string;
-    links: FooterLink[];
+    title: string
+    links: FooterLink[]
 }
 
-
 interface ContactInfo {
-    type: string;
-    value: string;
-    icon: string;
-    href?: string;
+    type: string
+    value: string
+    icon: string
+    href?: string
 }
 
 const FooterSection: React.FC = () => {
-
     const footerSections: FooterSection[] = [
         {
             title: 'Destinasi Populer',
@@ -46,8 +44,8 @@ const FooterSection: React.FC = () => {
                 { label: 'Labuan Bajo', href: '/destinasi/labuan-bajo' },
                 { label: 'Borobudur', href: '/destinasi/borobudur' },
                 { label: 'Kawah Ijen', href: '/destinasi/kawah-ijen' },
-                { label: 'Lihat Semua', href: '/destinasi' }
-            ]
+                { label: 'Lihat Semua', href: '/destinasi' },
+            ],
         },
         {
             title: 'Layanan Kami',
@@ -57,8 +55,8 @@ const FooterSection: React.FC = () => {
                 { label: 'Group Tour', href: '/group-tour' },
                 { label: 'Honeymoon Package', href: '/honeymoon' },
                 { label: 'Corporate Travel', href: '/corporate' },
-                { label: 'Custom Itinerary', href: '/custom-tour' }
-            ]
+                { label: 'Custom Itinerary', href: '/custom-tour' },
+            ],
         },
         {
             title: 'Bantuan',
@@ -68,8 +66,8 @@ const FooterSection: React.FC = () => {
                 { label: 'Cara Pemesanan', href: '/cara-pemesanan' },
                 { label: 'Kebijakan Privasi', href: '/privacy-policy' },
                 { label: 'Syarat & Ketentuan', href: '/terms-conditions' },
-                { label: 'Hubungi Kami', href: '/contact' }
-            ]
+                { label: 'Hubungi Kami', href: '/contact' },
+            ],
         },
         {
             title: 'Perusahaan',
@@ -79,11 +77,10 @@ const FooterSection: React.FC = () => {
                 { label: 'Karir', href: '/career' },
                 { label: 'Blog', href: '/blog' },
                 { label: 'Press Release', href: '/press' },
-                { label: 'Mitra', href: '/partnership' }
-            ]
-        }
-    ];
-
+                { label: 'Mitra', href: '/partnership' },
+            ],
+        },
+    ]
 
     // Contact information
     const contactInfo: ContactInfo[] = [
@@ -91,38 +88,38 @@ const FooterSection: React.FC = () => {
             type: 'WhatsApp',
             value: '+62 851-8326-6453',
             icon: 'mdi:whatsapp',
-            href: 'https://wa.me/6285183266453'
+            href: 'https://wa.me/6285183266453',
         },
         {
             type: 'Email',
             value: 'info@ayotrip.com',
             icon: 'mdi:email',
-            href: 'mailto:info@ayotrip.com'
+            href: 'mailto:info@ayotrip.com',
         },
         {
             type: 'Alamat',
             value: 'Jl. Sudirman No. 123, Jakarta Pusat',
-            icon: 'mdi:map-marker'
+            icon: 'mdi:map-marker',
         },
         {
             type: 'Jam Operasional',
             value: 'Senin - Sabtu: 08:00 - 20:00',
-            icon: 'mdi:clock'
-        }
-    ];
+            icon: 'mdi:clock',
+        },
+    ]
 
     // Awards and certifications
     const awards = [
         { name: 'Best Travel Agency 2023', icon: 'mdi:trophy' },
         { name: 'ISO 9001:2015 Certified', icon: 'mdi:certificate' },
         { name: 'TripAdvisor Excellence', icon: 'mdi:star-circle' },
-        { name: 'Google Partner', icon: 'mdi:google' }
-    ];
+        { name: 'Google Partner', icon: 'mdi:google' },
+    ]
 
     return (
         <Box sx={{ backgroundColor: '#1e293b', color: 'white' }}>
             {/* Main Footer Content */}
-            <Container maxWidth="xl" sx={{ py: 6 }}>
+            <Container maxWidth='xl' sx={{ py: 6 }}>
                 <Grid container spacing={4}>
                     {/* Company Info & Newsletter */}
                     <Grid item xs={12} lg={4}>
@@ -139,42 +136,41 @@ const FooterSection: React.FC = () => {
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            mr: 2
+                                            mr: 2,
                                         }}
                                     >
-                                        <Icon icon="mdi:airplane" width={24} height={24} color="white" />
+                                        <Icon icon='mdi:airplane' width={24} height={24} color='white' />
                                     </Box>
                                     <Typography
-                                        variant="h5"
+                                        variant='h5'
                                         sx={{
                                             fontWeight: 'bold',
                                             background: 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)',
                                             WebkitBackgroundClip: 'text',
                                             WebkitTextFillColor: 'transparent',
-                                            backgroundClip: 'text'
+                                            backgroundClip: 'text',
                                         }}
                                     >
                                         AyoTrip
                                     </Typography>
                                 </Box>
                                 <Typography
-                                    variant="body2"
+                                    variant='body2'
                                     sx={{
                                         color: '#94a3b8',
                                         lineHeight: 1.7,
-                                        mb: 2
+                                        mb: 2,
                                     }}
                                 >
-                                    Temukan petualangan tak terlupakan di destinasi eksotis Indonesia.
-                                    Kami menghadirkan pengalaman wisata terbaik dengan pelayanan profesional
-                                    dan harga terjangkau untuk semua kalangan.
+                                    Temukan petualangan tak terlupakan di destinasi eksotis Indonesia. Kami menghadirkan
+                                    pengalaman wisata terbaik dengan pelayanan profesional dan harga terjangkau untuk
+                                    semua kalangan.
                                 </Typography>
                             </Box>
 
-
                             {/* Awards & Certifications */}
                             <Box>
-                                <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
+                                <Typography variant='h6' sx={{ fontWeight: 'bold', mb: 2 }}>
                                     Penghargaan & Sertifikasi
                                 </Typography>
                                 <Grid container spacing={1}>
@@ -183,8 +179,8 @@ const FooterSection: React.FC = () => {
                                             <Chip
                                                 icon={<Icon icon={award.icon} width={16} height={16} />}
                                                 label={award.name}
-                                                variant="outlined"
-                                                size="small"
+                                                variant='outlined'
+                                                size='small'
                                                 sx={{
                                                     borderColor: '#475569',
                                                     color: '#94a3b8',
@@ -192,8 +188,8 @@ const FooterSection: React.FC = () => {
                                                     height: 'auto',
                                                     py: 0.5,
                                                     '& .MuiChip-label': {
-                                                        px: 1
-                                                    }
+                                                        px: 1,
+                                                    },
                                                 }}
                                             />
                                         </Grid>
@@ -209,11 +205,11 @@ const FooterSection: React.FC = () => {
                             {footerSections.map((section, index) => (
                                 <Grid item xs={6} md={3} key={index}>
                                     <Typography
-                                        variant="h6"
+                                        variant='h6'
                                         sx={{
                                             fontWeight: 'bold',
                                             mb: 2,
-                                            fontSize: '1rem'
+                                            fontSize: '1rem',
                                         }}
                                     >
                                         {section.title}
@@ -229,8 +225,8 @@ const FooterSection: React.FC = () => {
                                                     fontSize: '0.875rem',
                                                     transition: 'color 0.2s',
                                                     '&:hover': {
-                                                        color: '#0ea5e9'
-                                                    }
+                                                        color: '#0ea5e9',
+                                                    },
                                                 }}
                                             >
                                                 {link.label}
@@ -245,7 +241,7 @@ const FooterSection: React.FC = () => {
                     {/* Contact Info */}
                     <Grid item xs={12} lg={2}>
                         <Typography
-                            variant="h6"
+                            variant='h6'
                             sx={{
                                 fontWeight: 'bold',
                                 mb: 2,
@@ -259,31 +255,31 @@ const FooterSection: React.FC = () => {
                             {contactInfo.map((contact, index) => {
                                 const listItemProps = contact.href
                                     ? {
-                                        component: 'a',
-                                        href: contact.href,
-                                        sx: {
-                                            textDecoration: 'none',
-                                            color: 'inherit',
-                                            mb: 2,
-                                            p: 0,
-                                            alignItems: 'flex-start',
-                                            '&:hover .MuiListItemText-primary': {
-                                                color: '#0ea5e9',
-                                            },
-                                        },
-                                    }
+                                          component: 'a',
+                                          href: contact.href,
+                                          sx: {
+                                              textDecoration: 'none',
+                                              color: 'inherit',
+                                              mb: 2,
+                                              p: 0,
+                                              alignItems: 'flex-start',
+                                              '&:hover .MuiListItemText-primary': {
+                                                  color: '#0ea5e9',
+                                              },
+                                          },
+                                      }
                                     : {
-                                        sx: {
-                                            mb: 2,
-                                            p: 0,
-                                            alignItems: 'flex-start',
-                                        },
-                                    };
+                                          sx: {
+                                              mb: 2,
+                                              p: 0,
+                                              alignItems: 'flex-start',
+                                          },
+                                      }
 
                                 return (
                                     <ListItem key={index} {...listItemProps}>
                                         <ListItemIcon sx={{ minWidth: 32, mt: 0.5 }}>
-                                            <Icon icon={contact.icon} width={18} height={18} color="#0ea5e9" />
+                                            <Icon icon={contact.icon} width={18} height={18} color='#0ea5e9' />
                                         </ListItemIcon>
 
                                         <ListItemText
@@ -300,19 +296,17 @@ const FooterSection: React.FC = () => {
                                             }}
                                         />
                                     </ListItem>
-                                );
+                                )
                             })}
                         </List>
                     </Grid>
-
                 </Grid>
-
             </Container>
 
             <Divider sx={{ borderColor: '#475569' }} />
 
             {/* Footer Bottom */}
-            <Container maxWidth="xl" sx={{ py: 3 }}>
+            <Container maxWidth='xl' sx={{ py: 3 }}>
                 <Box
                     sx={{
                         display: 'flex',
@@ -323,7 +317,7 @@ const FooterSection: React.FC = () => {
                     }}
                 >
                     <Typography
-                        variant="body2"
+                        variant='body2'
                         sx={{
                             color: '#94a3b8',
                             textAlign: { xs: 'center', md: 'left' },
@@ -333,7 +327,7 @@ const FooterSection: React.FC = () => {
                     </Typography>
 
                     <Stack
-                        direction="row"
+                        direction='row'
                         spacing={2}
                         sx={{
                             alignItems: 'center',
@@ -341,7 +335,7 @@ const FooterSection: React.FC = () => {
                             justifyContent: { xs: 'center', md: 'flex-end' },
                         }}
                     >
-                        <Typography variant="body2" sx={{ color: '#94a3b8' }}>
+                        <Typography variant='body2' sx={{ color: '#94a3b8' }}>
                             Partner Pembayaran:
                         </Typography>
 
@@ -359,15 +353,14 @@ const FooterSection: React.FC = () => {
                                     border: '1px solid #475569',
                                 }}
                             >
-                                <Icon icon={icon} width={16} height={16} color="#94a3b8" />
+                                <Icon icon={icon} width={16} height={16} color='#94a3b8' />
                             </Box>
                         ))}
                     </Stack>
                 </Box>
             </Container>
-
         </Box>
-    );
-};
+    )
+}
 
-export default FooterSection;
+export default FooterSection

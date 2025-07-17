@@ -1,18 +1,17 @@
 // components/HomepageViews.tsx
-import React from 'react';
-import { Box } from '@mui/material';
-import ToursSection from '@/views/tour-scetion';
-import Navbar from './navbar';
-import HeroSection from './hero-section';
-import WhyChooseSection from './reason-section';
-import PopularDestinationsSection from './popular-destionation-section';
-import FAQSection from './faq-section';
-import FooterSection from './footer';
+import { getNavbarLayout } from '@/components'
+import { NextPageWithLayout } from '@/utils'
+import ToursSection from '@/views/tour-scetion'
+import { Box } from '@mui/material'
+import FAQSection from './faq-section'
+import FooterSection from './footer'
+import HeroSection from './hero-section'
+import PopularDestinationsSection from './popular-destionation-section'
+import WhyChooseSection from './reason-section'
 
-const HomepageViews: React.FC = () => {
+const HomepageViews: NextPageWithLayout = () => {
     return (
         <Box sx={{ minHeight: '100vh' }}>
-            <Navbar />
             <HeroSection />
             <ToursSection />
             <WhyChooseSection />
@@ -20,7 +19,8 @@ const HomepageViews: React.FC = () => {
             <FAQSection />
             <FooterSection />
         </Box>
-    );
-};
+    )
+}
 
-export default HomepageViews;
+HomepageViews.getLayout = getNavbarLayout
+export default HomepageViews

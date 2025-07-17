@@ -9,14 +9,11 @@ export const PrivateRoute: FC<PropsWithChildren> = ({ children }) => {
     const router = useRouter()
     const user = useAuth(state => state.value.user)
 
-
     useEffect(() => {
         if (!user && router.asPath !== '/') {
             router.push(pathnames.login)
         }
     }, [user, router])
-
-
 
     return <>{children}</>
 }

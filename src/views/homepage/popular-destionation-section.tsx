@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react'
 import {
     Box,
     Container,
@@ -13,41 +13,41 @@ import {
     Paper,
     IconButton,
     Backdrop,
-} from '@mui/material';
-import { Icon } from '@iconify/react';
+} from '@mui/material'
+import { Icon } from '@iconify/react'
 
 // Type definitions
 interface Category {
-    id: number;
-    name: string;
-    icon: string;
+    id: number
+    name: string
+    icon: string
 }
 
 interface Destination {
-    id: number;
-    name: string;
-    location: string;
-    category: string;
-    image: string;
-    description: string;
-    rating: number;
-    tours: number;
-    startingPrice: string;
-    tags: string[];
+    id: number
+    name: string
+    location: string
+    category: string
+    image: string
+    description: string
+    rating: number
+    tours: number
+    startingPrice: string
+    tags: string[]
 }
 
 const PopularDestinationsSection: React.FC = () => {
-    const [selectedCategory, setSelectedCategory] = useState<number>(0);
-    const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
-    const [isClient, setIsClient] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState<number>(0)
+    const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null)
+    const [isClient, setIsClient] = useState(false)
 
     const categories: Category[] = [
         { id: 0, name: 'Semua', icon: 'mdi:earth' },
         { id: 1, name: 'Pantai', icon: 'mdi:beach' },
         { id: 2, name: 'Gunung', icon: 'mdi:mountain' },
         { id: 3, name: 'Budaya', icon: 'mdi:temple-buddhist' },
-        { id: 4, name: 'Kuliner', icon: 'mdi:food' }
-    ];
+        { id: 4, name: 'Kuliner', icon: 'mdi:food' },
+    ]
 
     const destinations: Destination[] = [
         {
@@ -60,7 +60,7 @@ const PopularDestinationsSection: React.FC = () => {
             rating: 4.9,
             tours: 15,
             startingPrice: 'Rp 2.500.000',
-            tags: ['Diving', 'Snorkeling', 'Island Hopping']
+            tags: ['Diving', 'Snorkeling', 'Island Hopping'],
         },
         {
             id: 2,
@@ -72,7 +72,7 @@ const PopularDestinationsSection: React.FC = () => {
             rating: 4.8,
             tours: 25,
             startingPrice: 'Rp 375.000',
-            tags: ['Sunrise', 'Trekking', 'Photography']
+            tags: ['Sunrise', 'Trekking', 'Photography'],
         },
         {
             id: 3,
@@ -84,7 +84,7 @@ const PopularDestinationsSection: React.FC = () => {
             rating: 4.7,
             tours: 18,
             startingPrice: 'Rp 450.000',
-            tags: ['Heritage', 'Sunrise', 'Culture']
+            tags: ['Heritage', 'Sunrise', 'Culture'],
         },
         {
             id: 4,
@@ -96,7 +96,7 @@ const PopularDestinationsSection: React.FC = () => {
             rating: 4.9,
             tours: 22,
             startingPrice: 'Rp 1.750.000',
-            tags: ['Komodo', 'Island Hopping', 'Sunset']
+            tags: ['Komodo', 'Island Hopping', 'Sunset'],
         },
         {
             id: 5,
@@ -108,7 +108,7 @@ const PopularDestinationsSection: React.FC = () => {
             rating: 4.6,
             tours: 12,
             startingPrice: 'Rp 350.000',
-            tags: ['Blue Fire', 'Hiking', 'Adventure']
+            tags: ['Blue Fire', 'Hiking', 'Adventure'],
         },
         {
             id: 6,
@@ -120,7 +120,7 @@ const PopularDestinationsSection: React.FC = () => {
             rating: 4.8,
             tours: 30,
             startingPrice: 'Rp 280.000',
-            tags: ['Culinary', 'Culture', 'Heritage']
+            tags: ['Culinary', 'Culture', 'Heritage'],
         },
         {
             id: 7,
@@ -132,7 +132,7 @@ const PopularDestinationsSection: React.FC = () => {
             rating: 4.7,
             tours: 20,
             startingPrice: 'Rp 850.000',
-            tags: ['Instagram Worthy', 'Snorkeling', 'Adventure']
+            tags: ['Instagram Worthy', 'Snorkeling', 'Adventure'],
         },
         {
             id: 8,
@@ -144,61 +144,62 @@ const PopularDestinationsSection: React.FC = () => {
             rating: 4.5,
             tours: 8,
             startingPrice: 'Rp 1.200.000',
-            tags: ['Traditional', 'Culture', 'Architecture']
-        }
-    ];
+            tags: ['Traditional', 'Culture', 'Architecture'],
+        },
+    ]
 
     // Client-side only rendering untuk menghindari hydration issues
     useEffect(() => {
-        setIsClient(true);
-    }, []);
+        setIsClient(true)
+    }, [])
 
     const handleCategoryChange = useCallback((categoryId: number) => {
-        setSelectedCategory(categoryId);
-    }, []);
+        setSelectedCategory(categoryId)
+    }, [])
 
-    const filteredDestinations: Destination[] = selectedCategory === 0
-        ? destinations
-        : destinations.filter(dest => dest.category === categories[selectedCategory]?.name);
+    const filteredDestinations: Destination[] =
+        selectedCategory === 0
+            ? destinations
+            : destinations.filter(dest => dest.category === categories[selectedCategory]?.name)
 
     const handleDestinationClick = useCallback((destination: Destination) => {
-        setSelectedDestination(destination);
-    }, []);
+        setSelectedDestination(destination)
+    }, [])
 
     const handleCloseModal = useCallback(() => {
-        setSelectedDestination(null);
-    }, []);
+        setSelectedDestination(null)
+    }, [])
 
     const handleModalContentClick = useCallback((e: React.MouseEvent) => {
-        e.stopPropagation();
-    }, []);
+        e.stopPropagation()
+    }, [])
 
     // Render loading state untuk SSR
     if (!isClient) {
         return (
             <Box sx={{ py: 8, backgroundColor: '#f8fafc' }}>
-                <Container maxWidth="xl">
+                <Container maxWidth='xl'>
                     <Box sx={{ textAlign: 'center', mb: 6 }}>
                         <Typography
-                            variant="h3"
-                            component="h2"
+                            variant='h3'
+                            component='h2'
                             sx={{
                                 fontWeight: 'bold',
                                 color: '#1e293b',
                                 mb: 2,
-                                fontSize: { xs: '1.875rem', md: '2.5rem' }
+                                fontSize: { xs: '1.875rem', md: '2.5rem' },
                             }}
                         >
                             Destinasi Populer
                         </Typography>
                         <Typography
-                            variant="body1"
+                            variant='body1'
                             sx={{
                                 color: '#64748b',
                                 fontSize: '1.1rem',
                                 maxWidth: '600px',
                                 mx: 'auto',
-                                mb: 4
+                                mb: 4,
                             }}
                         >
                             Jelajahi destinasi wisata terfavorit di Indonesia yang wajib dikunjungi
@@ -211,7 +212,7 @@ const PopularDestinationsSection: React.FC = () => {
                                 borderRadius: 3,
                                 border: '1px solid #e2e8f0',
                                 overflow: 'hidden',
-                                p: 2
+                                p: 2,
                             }}
                         >
                             <Box sx={{ display: 'flex', gap: 1 }}>
@@ -223,7 +224,7 @@ const PopularDestinationsSection: React.FC = () => {
                                             height: 32,
                                             backgroundColor: '#f1f5f9',
                                             borderRadius: 2,
-                                            animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                                            animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                                         }}
                                     />
                                 ))}
@@ -232,34 +233,34 @@ const PopularDestinationsSection: React.FC = () => {
                     </Box>
                 </Container>
             </Box>
-        );
+        )
     }
 
     return (
         <Box sx={{ py: 8, backgroundColor: '#f8fafc' }}>
-            <Container maxWidth="xl">
+            <Container maxWidth='xl'>
                 {/* Header Section */}
                 <Box sx={{ textAlign: 'center', mb: 6 }}>
                     <Typography
-                        variant="h3"
-                        component="h2"
+                        variant='h3'
+                        component='h2'
                         sx={{
                             fontWeight: 'bold',
                             color: '#1e293b',
                             mb: 2,
-                            fontSize: { xs: '1.875rem', md: '2.5rem' }
+                            fontSize: { xs: '1.875rem', md: '2.5rem' },
                         }}
                     >
                         Destinasi Populer
                     </Typography>
                     <Typography
-                        variant="body1"
+                        variant='body1'
                         sx={{
                             color: '#64748b',
                             fontSize: '1.1rem',
                             maxWidth: '600px',
                             mx: 'auto',
-                            mb: 4
+                            mb: 4,
                         }}
                     >
                         Jelajahi destinasi wisata terfavorit di Indonesia yang wajib dikunjungi
@@ -273,7 +274,7 @@ const PopularDestinationsSection: React.FC = () => {
                             borderRadius: 3,
                             border: '1px solid #e2e8f0',
                             overflow: 'hidden',
-                            p: 1
+                            p: 1,
                         }}
                     >
                         <Box
@@ -282,7 +283,7 @@ const PopularDestinationsSection: React.FC = () => {
                                 gap: 1,
                                 flexWrap: 'wrap',
                                 justifyContent: 'center',
-                                alignItems: 'center'
+                                alignItems: 'center',
                             }}
                         >
                             {categories.map((category: Category) => (
@@ -299,18 +300,18 @@ const PopularDestinationsSection: React.FC = () => {
                                         fontWeight: 'bold',
                                         ...(selectedCategory === category.id
                                             ? {
-                                                backgroundColor: '#0ea5e9',
-                                                color: 'white',
-                                                '&:hover': {
-                                                    backgroundColor: '#0284c7'
-                                                }
-                                            }
+                                                  backgroundColor: '#0ea5e9',
+                                                  color: 'white',
+                                                  '&:hover': {
+                                                      backgroundColor: '#0284c7',
+                                                  },
+                                              }
                                             : {
-                                                color: '#64748b',
-                                                '&:hover': {
-                                                    backgroundColor: '#f1f5f9'
-                                                }
-                                            })
+                                                  color: '#64748b',
+                                                  '&:hover': {
+                                                      backgroundColor: '#f1f5f9',
+                                                  },
+                                              }),
                                     }}
                                 >
                                     {category.name}
@@ -333,22 +334,22 @@ const PopularDestinationsSection: React.FC = () => {
                                     transition: 'all 0.3s ease',
                                     '&:hover': {
                                         transform: 'translateY(-8px)',
-                                        boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
-                                    }
+                                        boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+                                    },
                                 }}
                                 onClick={() => handleDestinationClick(destination)}
                             >
                                 <Box sx={{ position: 'relative', overflow: 'hidden' }}>
                                     <CardMedia
-                                        component="img"
-                                        height="200"
+                                        component='img'
+                                        height='200'
                                         image={destination.image}
                                         alt={destination.name}
                                         sx={{
                                             transition: 'transform 0.3s ease',
                                             '&:hover': {
-                                                transform: 'scale(1.05)'
-                                            }
+                                                transform: 'scale(1.05)',
+                                            },
                                         }}
                                     />
                                     <Box
@@ -361,12 +362,12 @@ const PopularDestinationsSection: React.FC = () => {
                                             backgroundColor: 'rgba(0,0,0,0.7)',
                                             borderRadius: 2,
                                             px: 1,
-                                            py: 0.5
+                                            py: 0.5,
                                         }}
                                     >
-                                        <Icon icon="mdi:star" width={16} height={16} color="#fbbf24" />
+                                        <Icon icon='mdi:star' width={16} height={16} color='#fbbf24' />
                                         <Typography
-                                            variant="caption"
+                                            variant='caption'
                                             sx={{ color: 'white', ml: 0.5, fontWeight: 'bold' }}
                                         >
                                             {destination.rating}
@@ -375,85 +376,82 @@ const PopularDestinationsSection: React.FC = () => {
                                 </Box>
 
                                 <CardContent sx={{ p: 3 }}>
-                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'flex-start',
+                                            mb: 2,
+                                        }}
+                                    >
                                         <Box>
                                             <Typography
-                                                variant="h6"
+                                                variant='h6'
                                                 sx={{ fontWeight: 'bold', color: '#1e293b', mb: 0.5 }}
                                             >
                                                 {destination.name}
                                             </Typography>
                                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                                                <Icon icon="mdi:map-marker" width={16} height={16} color="#64748b" />
-                                                <Typography
-                                                    variant="body2"
-                                                    sx={{ color: '#64748b', ml: 0.5 }}
-                                                >
+                                                <Icon icon='mdi:map-marker' width={16} height={16} color='#64748b' />
+                                                <Typography variant='body2' sx={{ color: '#64748b', ml: 0.5 }}>
                                                     {destination.location}
                                                 </Typography>
                                             </Box>
                                         </Box>
                                         <Chip
                                             label={destination.category}
-                                            size="small"
+                                            size='small'
                                             sx={{
                                                 backgroundColor: '#e0f2fe',
                                                 color: '#0ea5e9',
                                                 fontWeight: 'bold',
-                                                border: 'none'
+                                                border: 'none',
                                             }}
                                         />
                                     </Box>
 
                                     <Typography
-                                        variant="body2"
+                                        variant='body2'
                                         sx={{
                                             color: '#64748b',
                                             mb: 2,
                                             display: '-webkit-box',
                                             WebkitLineClamp: 2,
                                             WebkitBoxOrient: 'vertical',
-                                            overflow: 'hidden'
+                                            overflow: 'hidden',
                                         }}
                                     >
                                         {destination.description}
                                     </Typography>
 
-                                    <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap' }}>
+                                    <Stack direction='row' spacing={1} sx={{ mb: 2, flexWrap: 'wrap' }}>
                                         {destination.tags.slice(0, 2).map((tag: string, index: number) => (
                                             <Chip
                                                 key={index}
                                                 label={tag}
-                                                size="small"
-                                                variant="outlined"
+                                                size='small'
+                                                variant='outlined'
                                                 sx={{
                                                     borderColor: '#cbd5e1',
                                                     color: '#475569',
-                                                    fontSize: '0.75rem'
+                                                    fontSize: '0.75rem',
                                                 }}
                                             />
                                         ))}
                                     </Stack>
 
-                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <Box
+                                        sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                                    >
                                         <Box>
-                                            <Typography
-                                                variant="body2"
-                                                sx={{ color: '#64748b', fontSize: '0.875rem' }}
-                                            >
+                                            <Typography variant='body2' sx={{ color: '#64748b', fontSize: '0.875rem' }}>
                                                 Mulai dari
                                             </Typography>
-                                            <Typography
-                                                variant="h6"
-                                                sx={{ fontWeight: 'bold', color: '#0ea5e9' }}
-                                            >
+                                            <Typography variant='h6' sx={{ fontWeight: 'bold', color: '#0ea5e9' }}>
                                                 {destination.startingPrice}
                                             </Typography>
                                         </Box>
-                                        <Typography
-                                            variant="body2"
-                                            sx={{ color: '#64748b' }}
-                                        >
+                                        <Typography variant='body2' sx={{ color: '#64748b' }}>
                                             {destination.tours} paket
                                         </Typography>
                                     </Box>
@@ -466,9 +464,9 @@ const PopularDestinationsSection: React.FC = () => {
                 {/* CTA Section */}
                 <Box sx={{ textAlign: 'center' }}>
                     <Button
-                        variant="contained"
-                        size="large"
-                        startIcon={<Icon icon="mdi:compass" width={20} height={20} />}
+                        variant='contained'
+                        size='large'
+                        startIcon={<Icon icon='mdi:compass' width={20} height={20} />}
                         sx={{
                             backgroundColor: '#0ea5e9',
                             px: 4,
@@ -476,8 +474,8 @@ const PopularDestinationsSection: React.FC = () => {
                             borderRadius: 3,
                             fontWeight: 'bold',
                             '&:hover': {
-                                backgroundColor: '#0284c7'
-                            }
+                                backgroundColor: '#0284c7',
+                            },
                         }}
                     >
                         Jelajahi Semua Destinasi
@@ -490,8 +488,8 @@ const PopularDestinationsSection: React.FC = () => {
                 <Backdrop
                     sx={{
                         color: '#fff',
-                        zIndex: (theme) => theme.zIndex.drawer + 1,
-                        backdropFilter: 'blur(4px)'
+                        zIndex: theme => theme.zIndex.drawer + 1,
+                        backdropFilter: 'blur(4px)',
                     }}
                     open={Boolean(selectedDestination)}
                     onClick={handleCloseModal}
@@ -504,14 +502,14 @@ const PopularDestinationsSection: React.FC = () => {
                             overflow: 'auto',
                             borderRadius: 3,
                             p: 0,
-                            m: 2
+                            m: 2,
                         }}
                         onClick={handleModalContentClick}
                     >
                         <Box sx={{ position: 'relative' }}>
                             <CardMedia
-                                component="img"
-                                height="300"
+                                component='img'
+                                height='300'
                                 image={selectedDestination.image}
                                 alt={selectedDestination.name}
                             />
@@ -524,30 +522,30 @@ const PopularDestinationsSection: React.FC = () => {
                                     backgroundColor: 'rgba(0,0,0,0.5)',
                                     color: 'white',
                                     '&:hover': {
-                                        backgroundColor: 'rgba(0,0,0,0.7)'
-                                    }
+                                        backgroundColor: 'rgba(0,0,0,0.7)',
+                                    },
                                 }}
                             >
-                                <Icon icon="mdi:close" width={24} height={24} />
+                                <Icon icon='mdi:close' width={24} height={24} />
                             </IconButton>
                         </Box>
 
                         <Box sx={{ p: 4 }}>
-                            <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 1 }}>
+                            <Typography variant='h4' sx={{ fontWeight: 'bold', mb: 1 }}>
                                 {selectedDestination.name}
                             </Typography>
                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                                <Icon icon="mdi:map-marker" width={20} height={20} color="#64748b" />
-                                <Typography variant="body1" sx={{ color: '#64748b', ml: 1 }}>
+                                <Icon icon='mdi:map-marker' width={20} height={20} color='#64748b' />
+                                <Typography variant='body1' sx={{ color: '#64748b', ml: 1 }}>
                                     {selectedDestination.location}
                                 </Typography>
                             </Box>
 
-                            <Typography variant="body1" sx={{ mb: 3, lineHeight: 1.7 }}>
+                            <Typography variant='body1' sx={{ mb: 3, lineHeight: 1.7 }}>
                                 {selectedDestination.description}
                             </Typography>
 
-                            <Stack direction="row" spacing={1} sx={{ mb: 3, flexWrap: 'wrap', gap: 1 }}>
+                            <Stack direction='row' spacing={1} sx={{ mb: 3, flexWrap: 'wrap', gap: 1 }}>
                                 {selectedDestination.tags.map((tag: string, index: number) => (
                                     <Chip
                                         key={index}
@@ -555,7 +553,7 @@ const PopularDestinationsSection: React.FC = () => {
                                         sx={{
                                             backgroundColor: '#e0f2fe',
                                             color: '#0ea5e9',
-                                            fontWeight: 'bold'
+                                            fontWeight: 'bold',
                                         }}
                                     />
                                 ))}
@@ -563,33 +561,33 @@ const PopularDestinationsSection: React.FC = () => {
 
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                    <Icon icon="mdi:star" width={20} height={20} color="#fbbf24" />
-                                    <Typography variant="h6" sx={{ ml: 1, fontWeight: 'bold' }}>
+                                    <Icon icon='mdi:star' width={20} height={20} color='#fbbf24' />
+                                    <Typography variant='h6' sx={{ ml: 1, fontWeight: 'bold' }}>
                                         {selectedDestination.rating}
                                     </Typography>
                                 </Box>
-                                <Typography variant="body1" sx={{ color: '#64748b' }}>
+                                <Typography variant='body1' sx={{ color: '#64748b' }}>
                                     {selectedDestination.tours} paket tersedia
                                 </Typography>
                             </Box>
 
-                            <Stack direction="row" spacing={2}>
+                            <Stack direction='row' spacing={2}>
                                 <Button
-                                    variant="contained"
+                                    variant='contained'
                                     fullWidth
                                     sx={{
                                         backgroundColor: '#0ea5e9',
                                         py: 1.5,
                                         fontWeight: 'bold',
                                         '&:hover': {
-                                            backgroundColor: '#0284c7'
-                                        }
+                                            backgroundColor: '#0284c7',
+                                        },
                                     }}
                                 >
                                     Lihat Paket Tour
                                 </Button>
                                 <Button
-                                    variant="outlined"
+                                    variant='outlined'
                                     fullWidth
                                     sx={{
                                         borderColor: '#0ea5e9',
@@ -598,8 +596,8 @@ const PopularDestinationsSection: React.FC = () => {
                                         fontWeight: 'bold',
                                         '&:hover': {
                                             borderColor: '#0284c7',
-                                            backgroundColor: 'rgba(14, 165, 233, 0.04)'
-                                        }
+                                            backgroundColor: 'rgba(14, 165, 233, 0.04)',
+                                        },
                                     }}
                                 >
                                     Konsultasi
@@ -610,7 +608,7 @@ const PopularDestinationsSection: React.FC = () => {
                 </Backdrop>
             )}
         </Box>
-    );
-};
+    )
+}
 
-export default PopularDestinationsSection;
+export default PopularDestinationsSection

@@ -37,7 +37,7 @@ export const LogoForAppBar = () => {
                 <Image
                     src='/logos.png'
                     width={45}
-                    alt='Tanya Dokter'
+                    alt='Ayo Trip'
                     height={30}
                     // style={{ filter: filterTrigger }}
                 />
@@ -50,19 +50,13 @@ export const LogoForAppBar = () => {
                     gap: 0,
                     justifyContent: 'center',
                     width: 180,
-                    // [breakpoints.down('sm')]: {
-                    //     display: 'none',
-                    // },
                 }}
             >
-                <ColoredText text='Tanya Dokter' />
-                
+                <ColoredText text='Ayo Trip' />
             </Box>
         </Box>
     )
 }
-
-
 
 interface Props {
     text: string

@@ -24,8 +24,7 @@ interface Props {
 //     boxShadow: `0 0 0 2px ${theme.palette.background.default}`,
 // }))
 
-export const UserMenu = ({ handleLogout, }: Props) => {
-
+export const UserMenu = ({ handleLogout }: Props) => {
     const route = useRouter()
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -40,7 +39,6 @@ export const UserMenu = ({ handleLogout, }: Props) => {
 
     const user = useAuth(state => state.value.user)
 
-
     // const tokenWithoutBearer = tokenData?.split('Bearer ')[1]
 
     const open = Boolean(anchorEl)
@@ -52,8 +50,6 @@ export const UserMenu = ({ handleLogout, }: Props) => {
     // const handleBackoffice = () => {
     //   window.open(`${host}/login-auth?token=${tokenWithoutBearer}`, '_blank')
     // }
-
-
 
     return (
         <>
@@ -117,7 +113,6 @@ export const UserMenu = ({ handleLogout, }: Props) => {
                     <ListItemIcon>
                         <PersonIcon />
                     </ListItemIcon>
-
                 </MenuItem>
 
                 {user?.is_owner && (
@@ -133,7 +128,6 @@ export const UserMenu = ({ handleLogout, }: Props) => {
                     </MenuItem>
                 )}
 
-
                 <Divider className='!mt-[5px]' />
 
                 <MenuItem onClick={handleLogout} className='!mt-[5px] !rounded-lg !py-[10px]'>
@@ -142,10 +136,7 @@ export const UserMenu = ({ handleLogout, }: Props) => {
                     </ListItemIcon>
                     <ListItemText>Logout</ListItemText>
                 </MenuItem>
-
-
             </Menu>
-
         </>
     )
 }

@@ -36,7 +36,8 @@
         "react-hook-form": "^7.53.1",
         "react-toastify": "^10.0.6",
         "zod": "^3.23.8",
-        "zustand": "^5.0.1"
+        "zustand": "^5.0.1",
+        "react-imask": "^6.5.0-alpha.0"
     },
     "devDependencies": {
         "@types/node": "^20",

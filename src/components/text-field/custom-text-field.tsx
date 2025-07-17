@@ -1,13 +1,17 @@
-import { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField'
+import MuiTextField, { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField'
+import { Controller, type Control, type FieldValues, type Path } from 'react-hook-form'
 import InputAdornment from '@mui/material/InputAdornment'
 import IconButton from '@mui/material/IconButton'
 import { useState, useMemo } from 'react'
-import { Control, Controller, FieldValues, Path } from 'react-hook-form'
-import { MUITextField } from '../mui'
-import { Icon } from '@iconify/react'
+import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded'
+import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded'
+import Typography from '@mui/material/Typography'
+import { FormControl, MenuItem, SelectChangeEvent } from '@mui/material'
+import { Select } from '@mui/material'
+import { NumberMaskInput, NumberMaskInputComma, PhoneMaskInput } from './input-mask.component'
 
 export type TextFieldProps<T extends FieldValues = Record<string, any>> = Omit<MuiTextFieldProps, 'name'> & {
-    inputFormat?: 'NORMAL' | 'PASSWORD' | 'PHONE'
+    inputFormat?: 'NORMAL' | 'NUMBER' | 'DECIMAL' | 'PRICE' | 'PASSWORD' | 'PHONE' | 'PPN' | 'PERCENT' | 'EMAIL'
     name: Path<T>
     control: Control<T>
     onValueChange?: (value: string) => void
@@ -16,12 +20,15 @@ export type TextFieldProps<T extends FieldValues = Record<string, any>> = Omit<M
     placeholder?: string
     textUppercase?: boolean
     textLowercase?: boolean
+    disabled?: boolean
     textSlug?: boolean
-    maxLength?: number
+    setPercentage?: (value: string) => void
+    percentage?: string
+    disablePercentage?: boolean
     // label?: string
 }
 
-export function CustomTextField<T extends FieldValues = Record<string, any>>(props: TextFieldProps<T>) {
+export default function CustomTextField<T extends FieldValues = Record<string, any>>(props: TextFieldProps<T>) {
     const {
         control,
         inputFormat = 'NORMAL',
@@ -32,7 +39,10 @@ export function CustomTextField<T extends FieldValues = Record<string, any>>(pro
         textUppercase = false,
         textLowercase = false,
         textSlug = false,
-        maxLength,
+        disabled = false,
+        percentage,
+        setPercentage,
+        disablePercentage,
         // label,
         ...moreProps
     } = props
@@ -41,6 +51,24 @@ export function CustomTextField<T extends FieldValues = Record<string, any>>(pro
 
     const isPasswordType = inputFormat === 'PASSWORD'
 
+    const inputComponent: any = useMemo(() => {
+        switch (inputFormat) {
+            case 'PERCENT':
+                return percentage == 'percent' ? NumberMaskInputComma : NumberMaskInput
+            case 'PRICE':
+            case 'PPN':
+            case 'NUMBER':
+                return NumberMaskInput
+            case 'DECIMAL':
+                return NumberMaskInputComma
+            case 'PHONE':
+                return PhoneMaskInput
+
+            default:
+                return undefined
+        }
+    }, [inputFormat, percentage])
+
     const endAdornment = useMemo(() => {
         switch (inputFormat) {
             case 'PASSWORD':
@@ -48,18 +76,47 @@ export function CustomTextField<T extends FieldValues = Record<string, any>>(pro
                     <InputAdornment position='end'>
                         <IconButton onClick={() => setShowPassword(prev => !prev)}>
                             {showPassword ? (
-                                <Icon icon='ic:outline-visibility' className='text-base' />
+                                <VisibilityOffRoundedIcon fontSize='small' />
                             ) : (
-                                <Icon icon='ic:outline-visibility-off' className='text-base' />
+                                <VisibilityRoundedIcon fontSize='small' />
                             )}
                         </IconButton>
                     </InputAdornment>
                 )
+            case 'PERCENT':
+                return (
+                    <InputAdornment position={disablePercentage ? 'start' : 'end'}>
+                        {disablePercentage ? (
+                            <>{percentage == 'percent' ? '%' : 'Rp'}</>
+                        ) : (
+                            <PercentSelect percentage={percentage ?? 'percent'} setPercentage={setPercentage} />
+                        )}
+                    </InputAdornment>
+                )
+            case 'PPN':
+                return <InputAdornment position='start'>%</InputAdornment>
 
             default:
                 return moreProps.InputProps?.endAdornment
         }
-    }, [inputFormat, showPassword, moreProps.InputProps?.endAdornment])
+    }, [inputFormat, showPassword, moreProps.InputProps?.endAdornment, percentage, setPercentage, disablePercentage])
+
+    const startAdornment = useMemo(() => {
+        switch (inputFormat) {
+            case 'PHONE':
+                return (
+                    <InputAdornment position='start'>
+                        <Typography sx={{ mt: '1px' }}>+62</Typography>
+                    </InputAdornment>
+                )
+
+            case 'PRICE':
+                return <InputAdornment position='start'>Rp</InputAdornment>
+
+            default:
+                return moreProps.InputProps?.startAdornment
+        }
+    }, [inputFormat, moreProps.InputProps?.startAdornment])
 
     return (
         <Controller
@@ -71,10 +128,16 @@ export function CustomTextField<T extends FieldValues = Record<string, any>>(pro
                 const { onChange, ...moreField } = field
 
                 return (
-                    <MUITextField
+                    <MuiTextField
                         {...moreProps}
                         {...moreField}
                         error={error}
+                        onBlur={e => {
+                            if (moreProps.onBlur) {
+                                moreProps.onBlur(e) // Panggil onBlur dari props
+                            }
+                            field.onBlur() // Pastikan onBlur dari Controller tetap dipanggil
+                        }}
                         fullWidth
                         onChange={(e: any) => {
                             if (textUppercase) {
@@ -101,46 +164,71 @@ export function CustomTextField<T extends FieldValues = Record<string, any>>(pro
                                 onChange(e.target.value)
                             }
                         }}
-                        onKeyDown={e => {
-                            // -- Pengkondisian untuk hanya menerima input angka dan navigasi
-                            if (inputFormat === 'PHONE') {
-                                if (
-                                    !/[0-9]/.test(e.key) &&
-                                    !['Backspace', 'Tab', 'Delete', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(
-                                        e.key
-                                    )
-                                ) {
-                                    e.preventDefault()
-                                }
-                            }
-                        }}
                         helperText={helperText}
                         type={!isPasswordType ? moreProps.type : showPassword ? 'text' : 'password'}
+                        size='small'
+                        disabled={disabled}
+                        InputLabelProps={{ shrink: true }}
                         placeholder={isReadOnly ? undefined : placeholder ? placeholder : `${props?.label || ''}...`}
                         InputProps={{
                             ...moreProps.InputProps,
+                            sx: { pr: 0.5 },
+                            inputComponent,
                             endAdornment,
+                            startAdornment,
                             autoComplete: 'off',
                             readOnly: isReadOnly,
                         }}
-                        inputProps={{
-                            inputMode: inputFormat === 'PHONE' ? 'numeric' : 'text',
-                            maxLength,
-                        }}
                         variant={variant}
                         sx={{
-                            '& .MuiInputBase-root': {
-                                cursor: isReadOnly ? 'default' : '',
-                            },
+                            pl: variant === 'standard' ? 1 : 0,
                             '& .MuiInputBase-input:hover': {
                                 cursor: isReadOnly ? 'default' : '',
                             },
+                            // backgroundColor: disabled ? 'grey' : '',
                         }}
                     />
                 )
             }}
             name={props.name}
             control={control}
+            rules={{
+                ...(inputFormat === 'EMAIL' && {
+                    required: 'Email wajib diisi',
+                    pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: 'Format email tidak valid',
+                    },
+                }),
+            }}
         />
+    )
+}
+
+interface Props {
+    percentage: string
+    setPercentage?: (value: string) => void
+}
+function PercentSelect({ percentage, setPercentage }: Props) {
+    const handleChange = (event: SelectChangeEvent) => {
+        if (setPercentage) {
+            setPercentage(event.target.value as string)
+        }
+    }
+
+    return (
+        <FormControl fullWidth>
+            <Select
+                variant='standard'
+                labelId='demo-simple-select-label'
+                id='demo-simple-select'
+                value={percentage}
+                sx={{ width: '35px' }}
+                onChange={handleChange}
+            >
+                <MenuItem value={'percent'}>%</MenuItem>
+                <MenuItem value={'rupiah'}>Rp</MenuItem>
+            </Select>
+        </FormControl>
     )
 }

@@ -17,22 +17,19 @@ import dynamic from 'next/dynamic'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 // const version = require('package.json').version
 
-const LogoForAppBar = dynamic(() => import('@/components/logo').then(mod => mod.LogoForAppBar), { ssr: false });
-const UserMenu = dynamic(() => import('@/components/user-menu').then(mod => mod.UserMenu), { ssr: false });
+const LogoForAppBar = dynamic(() => import('@/components/logo').then(mod => mod.LogoForAppBar), { ssr: false })
+const UserMenu = dynamic(() => import('@/components/user-menu').then(mod => mod.UserMenu), { ssr: false })
 
 interface NavbarProps extends PropsWithChildren<any> {
     drawerWidth?: number
 }
 
 const Navbar: React.FC<NavbarProps> = (Props: NavbarProps) => {
-    const {
-        drawerWidth,
-    } = Props
+    const { drawerWidth } = Props
 
     const [currentTime, setCurrentTime] = useState<string>(dayjs().format('DD MMMM YYYY HH:mm:ss'))
 
     const { push } = useRouter()
-
 
     const logout = useAuth(state => state.logout)
 
@@ -54,19 +51,16 @@ const Navbar: React.FC<NavbarProps> = (Props: NavbarProps) => {
         push(pathnames.login)
     }
 
-
     useEffect(() => {
-        setCurrentTime(dayjs().format('DD MMMM YYYY HH:mm:ss'));
+        setCurrentTime(dayjs().format('DD MMMM YYYY HH:mm:ss'))
         const interval = setInterval(() => {
-            setCurrentTime(dayjs().format('DD MMMM YYYY HH:mm:ss'));
-        }, 1000);
+            setCurrentTime(dayjs().format('DD MMMM YYYY HH:mm:ss'))
+        }, 1000)
 
-        return () => clearInterval(interval);
-    }, []);
+        return () => clearInterval(interval)
+    }, [])
 
-    if (!currentTime) return null;
-
-
+    if (!currentTime) return null
 
     return (
         <>
@@ -90,7 +84,7 @@ const Navbar: React.FC<NavbarProps> = (Props: NavbarProps) => {
                         sx={() => ({
                             minHeight: appBarHeight + 'px !important',
                         })}
-                        className='flex justify-between gap-3'
+                        className='flex justify-between gap-1'
                     >
                         <Box className='page-header flex gap-1 shrink-0'>
                             <div className='flex-shrink-0 hidden md:block'>
@@ -99,12 +93,14 @@ const Navbar: React.FC<NavbarProps> = (Props: NavbarProps) => {
 
                             <Box
                                 sx={({ breakpoints }) => ({
-                                    width: `${30}px`,
+                                    width: 30,
+                                    display: 'flex',
+                                    marginLeft: 8,
+                                    alignItems: 'center',
                                     [breakpoints.down('md')]: {
                                         display: 'none',
                                     },
                                 })}
-                                className='flex items-center'
                             >
                                 <IconButton onClick={toggleExpandDrawer}>
                                     <MenuOutlined color='primary' />
@@ -113,11 +109,12 @@ const Navbar: React.FC<NavbarProps> = (Props: NavbarProps) => {
 
                             <Box
                                 sx={({ breakpoints }) => ({
-                                    [breakpoints.up('md')]: {
-                                        display: 'none',
+                                    display: 'none',
+                                    alignItems: 'center',
+                                    [breakpoints.down('md')]: {
+                                        display: 'flex',
                                     },
                                 })}
-                                className='flex items-center'
                             >
                                 <IconButton onClick={handleDrawerToggle}>
                                     <MenuOutlined color='primary' />
@@ -130,7 +127,6 @@ const Navbar: React.FC<NavbarProps> = (Props: NavbarProps) => {
                         </div> */}
 
                         <Box className='flex justify-end'>
-
                             <div className='sm:flex items-center hidden h-full'>
                                 {/* <div className='flex items-center flex-col w-max justify-center gap-0 mr-[15px]'>
                                     <p className='text-pr-8 text-[13px] font-bold'>{user?.fullname || 'Guest'}</p>
@@ -141,7 +137,6 @@ const Navbar: React.FC<NavbarProps> = (Props: NavbarProps) => {
 
                                 <UserMenu handleLogout={handleLogout} />
                             </div>
-
                         </Box>
                     </Toolbar>
                 </AppBar>
@@ -182,7 +177,6 @@ const Navbar: React.FC<NavbarProps> = (Props: NavbarProps) => {
                     ) : (
                         <GenerateMiniListItem items={list_menu} />
                     )}
-
                 </Drawer>
 
                 {/* DRAWER FOR MOBILE */}
@@ -203,15 +197,7 @@ const Navbar: React.FC<NavbarProps> = (Props: NavbarProps) => {
                         },
                     }}
                 >
-                    <>
-                        {
-                            <ExpandedDrawer
-                                items={list_menu}
-                                appBarHeight={appBarHeight}
-                                handleLogout={handleLogout}
-                            />
-                        }
-                    </>
+                    <>{<ExpandedDrawer items={list_menu} appBarHeight={appBarHeight} handleLogout={handleLogout} />}</>
                 </Drawer>
             </Box>
         </>

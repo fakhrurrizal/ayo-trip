@@ -1,32 +1,18 @@
-import { CustomTextField } from '@/components'
+import IconifyIcon from '@/components/icon'
+import CustomTextField from '@/components/text-field/custom-text-field'
 import { axiosInterceptor } from '@/config'
 import { LoginForm, loginSchema, useLoginMutation } from '@/modules/auth/login'
 import { ResponseGetMe } from '@/modules/user'
 import { useAuth } from '@/services'
 import { getApi, pathnames } from '@/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Box, BoxProps, Button, CircularProgress, Grid, styled } from '@mui/material'
+import { Box, Button, Card, CardContent, Grid, Typography } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
-import Head from 'next/head'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-
-const RightWrapper = styled(Box)<BoxProps>(({ theme }) => ({
-    width: '100%',
-    borderRadius: 13,
-    background: 'linear-gradient(to bottom, #D7F0FF, #E1F3FF, #EDF8FF, #F5FBFF, #FFFFFF)',
-    [theme.breakpoints.up('md')]: {
-        maxWidth: 550,
-    },
-    [theme.breakpoints.up('lg')]: {
-        maxWidth: 700,
-    },
-    [theme.breakpoints.up('xl')]: {
-        maxWidth: 850,
-    },
-}))
 
 const LoginPageViews = () => {
     const router = useRouter()
@@ -45,7 +31,7 @@ const LoginPageViews = () => {
 
     const returnUrlQuery = router.query.returnUrl
 
-    const { refetch: getMe, isLoading: loadingUser } = useQuery({
+    const { refetch: getMe } = useQuery({
         queryFn: async () => {
             const res = await axiosInterceptor.get<ResponseGetMe>(getApi('get_me'))
 
@@ -64,7 +50,11 @@ const LoginPageViews = () => {
         resolver: zodResolver(loginSchema),
     })
 
-    const { handleSubmit } = form
+    const {
+        handleSubmit,
+        control,
+        formState: { errors },
+    } = form
 
     const onSubmit: SubmitHandler<LoginForm> = async data => {
         try {
@@ -93,144 +83,160 @@ const LoginPageViews = () => {
     }
 
     return (
-        <>
-            <Head>
-                <title>Login - App Dashboard</title>
-            </Head>
-
-            <Box
-                sx={{
-                    backgroundColor: 'white',
-                    height: 'auto',
-                    display: 'flex',
-                    minHeight: '100vh',
-                    overflowX: 'hidden',
-                    position: 'relative',
+        <div className='min-h-screen flex'>
+            {/* Background Image */}
+            <div
+                className='hidden lg:block lg:w-1/2 bg-cover bg-center'
+                style={{
+                    backgroundImage: `url('/images/register.jpg')`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
                 }}
+            />
+
+            <div
+                className='w-full lg:w-1/2 flex items-center justify-center p-8 relative'
+                style={{ backgroundColor: '#0ea5e9' }}
             >
-                <Box
-                    sx={{
-                        display: { xs: 'none', md: 'flex' },
-                        flexDirection: 'column',
-                        flexGrow: 1,
-                        alignItems: 'center',
-                        justifyContent: 'flex-start',
-                        borderRadius: '16px',
-                        height: '100vh',
-                        position: 'relative',
-                    }}
-                >
-                    <img
-                        src={'/images/left-wrapper.png'}
-                        style={{
-                            objectFit: 'cover',
-                            height: '100%',
-                            width: '100%',
-                            borderRadius: '16px',
-                        }}
-                        alt='image_slider'
+                <div className='absolute top-0 right-0'>
+                    <Image
+                        src='/decorative-lines-top.png'
+                        alt='Decorative Lines Top'
+                        width={400}
+                        height={400}
+                        className='opacity-60'
                     />
-                </Box>
-                <RightWrapper>
-                    <Box
-                        sx={({ breakpoints }) => ({
-                            p: [6, 12],
-                            height: '100%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: 'none',
-                            flexDirection: 'column',
-                            position: 'relative',
-                            [breakpoints.up('md')]: {
-                                overflow: 'hidden',
-                            },
-                        })}
-                    >
-                        <Box
-                            sx={{
-                                width: { xs: 'auto', sm: '500px', md: '400px', lg: '500px', xl: '500px' },
-                                minWidth: { xs: 'auto', sm: '500px', md: '400px', lg: '500px', xl: '500px' },
-                                maxWidth: { xs: 'auto', sm: '500px', md: '400px', lg: '500px', xl: '500px' },
-                                zIndex: 2,
-                            }}
+                </div>
+
+                <div className='absolute bottom-0 left-0'>
+                    <Image
+                        src='/decorative-lines-bottom.png'
+                        alt='Decorative Lines Bottom'
+                        width={400}
+                        height={400}
+                        className='opacity-60'
+                    />
+                </div>
+
+                <Card
+                    className='w-full max-w-sm shadow-none border-0 relative z-10'
+                    sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}
+                >
+                    <CardContent className='p-0'>
+                        {/* Logo */}
+                        <Box className='flex justify-center items-center mb-3'>
+                            <Image src='/logos.png' alt='Logo' width={100} height={100} />
+                        </Box>
+
+                        {/* Title */}
+                        <Typography
+                            variant='h3'
+                            className='text-center font-bold mb-8'
+                            style={{ color: 'white', fontSize: '2.5rem', fontWeight: '700' }}
                         >
-                            <Box
-                                component='img'
-                                src='/logos.png'
-                                sx={() => ({
-                                    height: 'auto',
-                                    width: {
-                                        xs: '120px',
-                                        sm: '160px',
-                                        md: '200px',
-                                        lg: '180px',
-                                        xl: '220px',
-                                    },
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    marginLeft: 'auto',
-                                    marginRight: 'auto',
-                                    background: 'none',
-                                    cursor: 'pointer',
-                                    marginBottom: '60px',
-                                })}
-                            />
+                            Login
+                        </Typography>
 
-                            <form onSubmit={handleSubmit(onSubmit)}>
-                                <Grid container spacing={2}>
-                                    <Grid item xs={12}>
-                                        <CustomTextField
-                                            control={form.control}
-                                            name='email'
-                                            type='email'
-                                            size='medium'
-                                            label='Email'
-                                            placeholder='Masukkan email...'
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <CustomTextField
-                                            control={form.control}
-                                            name='password'
-                                            type='password'
-                                            label='Password'
-                                            size='medium'
-                                            inputFormat='PASSWORD'
-                                            placeholder='Masukkan password...'
-                                        />
-                                    </Grid>
+                        <form onSubmit={handleSubmit(onSubmit)} className='space-y-5'>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                    <CustomTextField
+                                        control={control}
+                                        size='medium'
+                                        error={!!errors.email}
+                                        name='email'
+                                        label='Email*'
+                                        InputLabelProps={{ style: { color: 'white' } }}
+                                    />
                                 </Grid>
+                                <Grid item xs={12}>
+                                    <CustomTextField
+                                        control={control}
+                                        inputFormat='PASSWORD'
+                                        size='medium'
+                                        error={!!errors.password}
+                                        placeholder='••••••••'
+                                        name='password'
+                                        label='Password*'
+                                        InputLabelProps={{ style: { color: 'white' } }}
+                                    />
+                                </Grid>
+                            </Grid>
 
+                            {/* Button */}
+                            <Box className='pt-4'>
                                 <Button
-                                    fullWidth
-                                    size='large'
                                     type='submit'
+                                    fullWidth
                                     variant='contained'
-                                    disabled={isLoadingLogin || loadingUser}
-                                    startIcon={isLoadingLogin || (loadingUser && <CircularProgress size={20} />)}
+                                    disabled={isLoadingLogin}
                                     sx={{
-                                        mb: 4,
-                                        fontSize: { xs: 12, md: 14 },
-                                        backgroundColor: '#116487',
-                                        mt: 10,
-                                        fontWeight: 700,
-                                        textTransform: 'capitalize',
-                                        ':hover': {
-                                            backgroundColor: '#52849e',
-                                            color: 'white',
+                                        backgroundColor: '#f59e0b',
+                                        '&:hover': {
+                                            backgroundColor: '#d97706',
+                                        },
+                                        borderRadius: '8px',
+                                        height: '48px',
+                                        fontSize: '16px',
+                                        fontWeight: '600',
+                                        textTransform: 'none',
+                                        color: 'white',
+                                    }}
+                                >
+                                    {isLoadingLogin ? (
+                                        <Box className='flex items-center gap-2'>
+                                            <IconifyIcon icon='mdi:loading' className='animate-spin' />
+                                            Memproses...
+                                        </Box>
+                                    ) : (
+                                        'Masuk'
+                                    )}
+                                </Button>
+                            </Box>
+                        </form>
+
+                        {/* Link ke Register */}
+                        <Box className='text-center mt-6'>
+                            <Typography variant='body2' style={{ color: 'white', fontSize: '14px' }}>
+                                Belum punya akun?{' '}
+                                <Typography
+                                    component='span'
+                                    onClick={() => router.push('/auth/register')}
+                                    sx={{
+                                        color: 'white',
+                                        textDecoration: 'none',
+                                        fontWeight: '500',
+                                        cursor: 'pointer',
+                                        '&:hover': {
+                                            textDecoration: 'underline',
                                         },
                                     }}
                                 >
-                                    {isLoadingLogin || loadingUser ? 'Loading ...' : ' Sign In'}
-                                </Button>
-                            </form>
+                                    Daftar sekarang
+                                </Typography>
+                            </Typography>
                         </Box>
-                    </Box>
-                </RightWrapper>
-            </Box>
-        </>
+                        <Box className='text-center mt-6'>
+                            <Typography
+                                component='span'
+                                onClick={() => router.push('/')}
+                                sx={{
+                                    color: 'white',
+                                    textDecoration: 'none',
+                                    fontWeight: '500',
+                                    cursor: 'pointer',
+                                    '&:hover': {
+                                        textDecoration: 'underline',
+                                    },
+                                }}
+                            >
+                                Kembali
+                            </Typography>
+                        </Box>
+                    </CardContent>
+                </Card>
+            </div>
+        </div>
     )
 }
 

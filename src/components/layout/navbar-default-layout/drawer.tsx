@@ -1,8 +1,7 @@
 import Icon from '@/components/icon'
 import { NavbarItem } from '@/interfaces'
-import { useApplicationSettings, useAuth } from '@/services'
+import { useApplicationSettings } from '@/services'
 import { ExpandLess, ExpandMore } from '@mui/icons-material'
-import LockIcon from '@mui/icons-material/Lock'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
 import { Box, List, SxProps, Theme, Tooltip, Typography, useTheme } from '@mui/material'
 import Collapse from '@mui/material/Collapse'
@@ -23,7 +22,7 @@ interface Props {
 const ExpandedDrawer = (props: Props) => {
     const {
         items = [],
-        appBarHeight = 65,
+        appBarHeight = 55,
         handleLogout = () => {
             return
         },
@@ -43,10 +42,6 @@ const ExpandedDrawer = (props: Props) => {
         return currentPath === pathname || currentPath.startsWith(`${pathname}/`)
     }
 
-    const user = useAuth().value.user
-
-    const statusUser = user?.status
-
     const screenModeValue = useApplicationSettings(state => state.value.screenMode)
 
     return (
@@ -63,17 +58,12 @@ const ExpandedDrawer = (props: Props) => {
                 })}
             >
                 <List component='div'>
-                    {items?.map(({ icon, path, name, is_locked_for_trial, children = [], key }: any, index: number) => {
+                    {items?.map(({ icon, path, name, children = [], key }: any, index: number) => {
                         const isHaveChildren = children.length > 0
 
                         const childrenIsSelected = children.some(({ path }: any) => isSelectedItem(path))
 
-                        const handleToggle = (
-                            name: string,
-                            isHaveChildren: boolean,
-                            isLockedForTrial: boolean,
-                            path: string
-                        ) => {
+                        const handleToggle = (name: string, isHaveChildren: boolean, path: string) => {
                             setDropdown(prev => (prev === name ? null : name))
                             if (!isHaveChildren) {
                                 pushRoute(path)
@@ -83,14 +73,16 @@ const ExpandedDrawer = (props: Props) => {
                         const isOpenDropdown = dropdown === name
 
                         const listSubIconButtonStyle: SxProps<Theme> = () => ({
-                            paddingLeft: 3,
+                            paddingLeft: 4,
                             '&.Mui-selected': {
-                                backgroundColor: 'transparent',
+                                backgroundColor: theme.palette.action.selected,
                             },
                         })
 
                         const listSubIconIconStyle: SxProps<Theme> = () => ({
-                            opacity: is_locked_for_trial && Number(statusUser) === 3 ? 0.5 : 1,
+                            minWidth: 0,
+                            mr: 2,
+                            justifyContent: 'center',
                         })
 
                         return (
@@ -101,16 +93,14 @@ const ExpandedDrawer = (props: Props) => {
                                     enterNextDelay={500}
                                 >
                                     <ListItemButton
-                                        onClick={() => handleToggle(name, isHaveChildren, is_locked_for_trial, path)}
+                                        onClick={() => handleToggle(name, isHaveChildren, path)}
                                         selected={isSelectedItem(path) || childrenIsSelected}
                                         sx={{
                                             justifyContent: 'initial',
                                             width: 'inherit',
                                             height: 'inherit',
-                                            backgroundColor: 'none',
                                             mt: '3px',
                                         }}
-                                        disabled={isHaveChildren ? false : true}
                                         className='!px-3 !py-1 !flex !items-center'
                                     >
                                         <ListItemIcon sx={{ minWidth: 0, mr: 2, justifyContent: 'center' }}>
@@ -121,8 +111,8 @@ const ExpandedDrawer = (props: Props) => {
                                                     isSelectedItem(path) || childrenIsSelected
                                                         ? theme.palette.primary.main
                                                         : screenModeValue === 'DARK'
-                                                            ? 'white'
-                                                            : ''
+                                                          ? 'white'
+                                                          : ''
                                                 }
                                             />
                                         </ListItemIcon>
@@ -132,10 +122,6 @@ const ExpandedDrawer = (props: Props) => {
                                             sx={{ display: 'initial' }}
                                             primaryTypographyProps={{ sx: { fontSize: 14 } }}
                                         />
-
-                                        {is_locked_for_trial && Number(statusUser) === 3 && !isHaveChildren && (
-                                            <LockIcon sx={{ color: 'orange' }} />
-                                        )}
 
                                         {isHaveChildren && (isOpenDropdown ? <ExpandLess /> : <ExpandMore />)}
                                     </ListItemButton>
@@ -171,20 +157,27 @@ const ExpandedDrawer = (props: Props) => {
                                                                     color={
                                                                         isSelectedItem(path)
                                                                             ? theme.palette.primary.main
-                                                                            : ''
+                                                                            : screenModeValue === 'DARK'
+                                                                              ? 'white'
+                                                                              : theme.palette.text.secondary
                                                                     }
                                                                 />
                                                             </ListItemIcon>
 
                                                             <ListItemText
                                                                 primary={childrenTitle}
-                                                                sx={listSubIconIconStyle}
-                                                                primaryTypographyProps={{ sx: { fontSize: 13.5 } }}
+                                                                sx={{ display: 'initial' }}
+                                                                primaryTypographyProps={{
+                                                                    sx: {
+                                                                        fontSize: 13.5,
+                                                                        color: isSelectedItem(path)
+                                                                            ? theme.palette.primary.main
+                                                                            : screenModeValue === 'DARK'
+                                                                              ? 'white'
+                                                                              : theme.palette.text.primary,
+                                                                    },
+                                                                }}
                                                             />
-
-                                                            {is_locked_for_trial && Number(statusUser) === 3 && (
-                                                                <LockIcon sx={{ color: 'orange' }} />
-                                                            )}
                                                         </ListItemButton>
                                                     </Tooltip>
                                                 )

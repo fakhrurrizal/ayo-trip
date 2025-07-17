@@ -44,7 +44,7 @@ export const GenerateMiniListItem: FunctionComponent<GenerateListItemProps> = ({
             disablePadding
             component='div'
             sx={() => ({
-                paddingTop: '4.75rem',
+                paddingTop: '6rem',
                 transition: 'transform 0.3s ease-in-out',
                 '&:enter': {
                     transform: 'translateX(-100%)',
@@ -141,15 +141,12 @@ const NavbarButton = ({ path, children = [], icon, name }: NavbarItem) => {
                                         sx={listSubIconIconStyle}
                                         primaryTypographyProps={{ sx: { fontSize: 12.5 } }}
                                     />
-
-
                                 </ListItemButton>
                             </Tooltip>
                         </ListItem>
                     )
                 })}
             </SzhsinMenu>
-
         </>
     )
 }

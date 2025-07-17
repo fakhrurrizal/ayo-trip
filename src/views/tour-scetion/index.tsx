@@ -1,15 +1,8 @@
 // components/ToursSection.tsx
-import React from 'react';
-import {
-    Container,
-    Typography,
-    Grid,
-    Box,
-    Button,
-    Paper
-} from '@mui/material';
-import { Icon } from '@iconify/react';
-import TourCard from './tour-card';
+import React from 'react'
+import { Container, Typography, Grid, Box, Button, Paper } from '@mui/material'
+import { Icon } from '@iconify/react'
+import TourCard from './tour-card'
 
 const ToursSection: React.FC = () => {
     const tours = [
@@ -24,7 +17,7 @@ const ToursSection: React.FC = () => {
             rating: 5.0,
             reviewCount: 250,
             type: 'Open Trip' as const,
-            isPopular: true
+            isPopular: true,
         },
         {
             id: '2',
@@ -36,7 +29,7 @@ const ToursSection: React.FC = () => {
             location: 'Lampung',
             rating: 5.0,
             reviewCount: 250,
-            type: 'Private Trip' as const
+            type: 'Private Trip' as const,
         },
         {
             id: '3',
@@ -48,7 +41,7 @@ const ToursSection: React.FC = () => {
             location: 'Sulawesi Selatan',
             rating: 5.0,
             reviewCount: 250,
-            type: 'Open Trip' as const
+            type: 'Open Trip' as const,
         },
         {
             id: '4',
@@ -60,7 +53,7 @@ const ToursSection: React.FC = () => {
             location: 'Jawa Tengah',
             rating: 5.0,
             reviewCount: 250,
-            type: 'Open Trip' as const
+            type: 'Open Trip' as const,
         },
         {
             id: '5',
@@ -72,7 +65,7 @@ const ToursSection: React.FC = () => {
             location: 'Nusa Tenggara Timur',
             rating: 5.0,
             reviewCount: 250,
-            type: 'Open Trip' as const
+            type: 'Open Trip' as const,
         },
         {
             id: '6',
@@ -84,7 +77,7 @@ const ToursSection: React.FC = () => {
             location: 'Jawa Timur',
             rating: 5.0,
             reviewCount: 250,
-            type: 'Open Trip' as const
+            type: 'Open Trip' as const,
         },
         {
             id: '7',
@@ -96,7 +89,7 @@ const ToursSection: React.FC = () => {
             location: 'Nusa Tenggara Timur',
             rating: 5.0,
             reviewCount: 250,
-            type: 'Private Trip' as const
+            type: 'Private Trip' as const,
         },
         {
             id: '8',
@@ -108,13 +101,13 @@ const ToursSection: React.FC = () => {
             location: 'Bali',
             rating: 5.0,
             reviewCount: 250,
-            type: 'Open Trip' as const
-        }
-    ];
+            type: 'Open Trip' as const,
+        },
+    ]
 
     return (
         <Box sx={{ py: 8, backgroundColor: '#f8fafc' }}>
-            <Container maxWidth="xl">
+            <Container maxWidth='xl'>
                 {/* Header Section */}
                 <Box sx={{ mb: 6 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -126,21 +119,16 @@ const ToursSection: React.FC = () => {
                                 p: 1,
                                 borderRadius: 2,
                                 backgroundColor: '#e0f2fe',
-                                mr: 3
+                                mr: 3,
                             }}
                         >
-                            <Icon
-                                icon="bi:umbrella"
-                                width={24}
-                                height={24}
-                                color="#0ea5e9"
-                            />
+                            <Icon icon='bi:umbrella' width={24} height={24} color='#0ea5e9' />
                             <Typography
-                                variant="body2"
+                                variant='body2'
                                 sx={{
                                     ml: 1,
                                     color: '#0ea5e9',
-                                    fontWeight: 'bold'
+                                    fontWeight: 'bold',
                                 }}
                             >
                                 Ayo Trip
@@ -151,22 +139,22 @@ const ToursSection: React.FC = () => {
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', mb: 4 }}>
                         <Box>
                             <Typography
-                                variant="h4"
-                                component="h2"
+                                variant='h4'
+                                component='h2'
                                 sx={{
                                     fontWeight: 'bold',
                                     color: '#1e293b',
                                     mb: 1,
-                                    fontSize: { xs: '1.75rem', md: '2.125rem' }
+                                    fontSize: { xs: '1.75rem', md: '2.125rem' },
                                 }}
                             >
                                 Temukan Jadwal liburanmu dengan Ayo Trip
                             </Typography>
                             <Typography
-                                variant="body1"
+                                variant='body1'
                                 sx={{
                                     color: '#64748b',
-                                    fontSize: '1.1rem'
+                                    fontSize: '1.1rem',
                                 }}
                             >
                                 Nikmati perjalanan tak terlupakan ke destinasi terbaik Indonesia
@@ -174,14 +162,14 @@ const ToursSection: React.FC = () => {
                         </Box>
 
                         <Button
-                            variant="text"
-                            endIcon={<Icon icon="mdi:arrow-right" width={20} height={20} />}
+                            variant='text'
+                            endIcon={<Icon icon='mdi:arrow-right' width={20} height={20} />}
                             sx={{
                                 color: '#0ea5e9',
                                 fontWeight: 'bold',
                                 '&:hover': {
-                                    backgroundColor: 'rgba(14, 165, 233, 0.04)'
-                                }
+                                    backgroundColor: 'rgba(14, 165, 233, 0.04)',
+                                },
                             }}
                         >
                             Lihat Semua
@@ -191,7 +179,7 @@ const ToursSection: React.FC = () => {
 
                 {/* Tours Grid */}
                 <Grid container spacing={3}>
-                    {tours.map((tour) => (
+                    {tours.map(tour => (
                         <Grid item xs={12} sm={6} md={4} lg={3} key={tour.id}>
                             <TourCard {...tour} />
                         </Grid>
@@ -201,9 +189,9 @@ const ToursSection: React.FC = () => {
                 {/* Load More Button */}
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
                     <Button
-                        variant="outlined"
-                        size="large"
-                        startIcon={<Icon icon="mdi:refresh" width={20} height={20} />}
+                        variant='outlined'
+                        size='large'
+                        startIcon={<Icon icon='mdi:refresh' width={20} height={20} />}
                         sx={{
                             borderColor: '#0ea5e9',
                             color: '#0ea5e9',
@@ -213,8 +201,8 @@ const ToursSection: React.FC = () => {
                             fontWeight: 'bold',
                             '&:hover': {
                                 borderColor: '#0284c7',
-                                backgroundColor: 'rgba(14, 165, 233, 0.04)'
-                            }
+                                backgroundColor: 'rgba(14, 165, 233, 0.04)',
+                            },
                         }}
                     >
                         Muat Lebih Banyak
@@ -222,7 +210,7 @@ const ToursSection: React.FC = () => {
                 </Box>
             </Container>
         </Box>
-    );
-};
+    )
+}
 
-export default ToursSection;
+export default ToursSection

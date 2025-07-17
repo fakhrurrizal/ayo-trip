@@ -1,424 +1,208 @@
-import React, { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import {
-    Box,
-    Card,
-    CardContent,
-    TextField,
-    Button,
-    Typography,
-    InputAdornment,
-    IconButton,
-    FormHelperText,
-} from '@mui/material';
-import { Icon } from '@iconify/react';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
+import CustomTextField from '@/components/text-field/custom-text-field'
+import { useUserProfile } from '@/utils/mutations/use-register'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Icon } from '@iconify/react'
+import { Box, Button, Card, CardContent, Grid, Typography } from '@mui/material'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
-// Zod schema untuk validasi
-const signUpSchema = z.object({
-    email: z
-        .string()
-        .min(1, 'Email is required')
-        .email('Please enter a valid email address'),
-    mobilePhone: z
-        .string()
-        .min(1, 'Mobile phone is required')
-        .regex(/^0\d{9,12}$/, 'Please enter a valid Indonesian phone number'),
-    newPassword: z
-        .string()
-        .min(8, 'Password must be at least 8 characters')
-        .regex(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-            'Password must contain at least one uppercase letter, one lowercase letter, and one number'
-        ),
-    confirmPassword: z.string().min(1, 'Please confirm your password'),
-}).refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ['confirmPassword'],
-});
+const signUpSchema = z
+    .object({
+        email: z.string().min(1, 'Email wajib diisi').email('Silakan masukkan alamat email yang valid'),
 
-type SignUpFormData = z.infer<typeof signUpSchema>;
+        fullname: z.string().min(1, 'Nama lengkap wajib diisi'),
+
+        phone: z
+            .string()
+            .min(1, 'Nomor telepon wajib diisi')
+            .regex(/^0\d{9,12}$/, 'Masukkan nomor telepon Indonesia yang valid (diawali 0, 10–13 digit)'),
+
+        password: z
+            .string()
+            .min(8, 'Kata sandi minimal terdiri dari 8 karakter')
+            .regex(
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+                'Kata sandi harus mengandung huruf besar, huruf kecil, dan angka'
+            ),
+
+        confirm_password: z.string().min(1, 'Konfirmasi kata sandi wajib diisi'),
+    })
+    .refine(data => data.password === data.confirm_password, {
+        message: 'Kata sandi dan konfirmasi tidak cocok',
+        path: ['confirm_password'],
+    })
+
+type SignUpFormData = z.infer<typeof signUpSchema>
 
 const SignUpComponent: React.FC = () => {
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
     const router = useRouter()
+
+    const { mutateAsync: register, isPending: isLoadingRegister } = useUserProfile()
 
     const {
         control,
         handleSubmit,
-        formState: { errors, isSubmitting },
+        formState: { errors },
     } = useForm<SignUpFormData>({
         resolver: zodResolver(signUpSchema),
         defaultValues: {
             email: '',
-            mobilePhone: '',
-            newPassword: '',
-            confirmPassword: '',
+            phone: '',
+            fullname: '',
+            password: '',
+            confirm_password: '',
         },
-    });
+    })
 
     const onSubmit = async (data: SignUpFormData) => {
         try {
-            console.log('Form submitted:', data);
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            // Handle successful submission
-            alert('Registration successful!');
+            await register({ ...data, role_id: 3 })
+            router.push('/auth/login')
         } catch (error) {
-            console.error('Submission error:', error);
+            console.error('Submission error:', error)
         }
-    };
+    }
 
     return (
-        <div className="min-h-screen flex">
-            {/* Right side - Background Image */}
+        <div className='min-h-screen flex'>
             <div
-                className="hidden lg:block lg:w-1/2 bg-cover bg-center"
+                className='hidden lg:block lg:w-1/2 bg-cover bg-center'
                 style={{
-                    backgroundImage: `url('/images/register.webp')`,
+                    backgroundImage: `url('/images/register.jpg')`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}
             />
 
             {/* Left side - Form */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center p-8" style={{ backgroundColor: '#B6E8FF' }}>
+            <div
+                className='w-full lg:w-1/2 flex items-center justify-center p-8 relative'
+                style={{ backgroundColor: '#0ea5e9' }}
+            >
+                {/* Decorative Image - Top Right */}
+                <div className='absolute top-0 right-0'>
+                    <Image
+                        src='/decorative-lines-top.png'
+                        alt='Decorative Lines Top'
+                        width={400}
+                        height={400}
+                        className='opacity-60'
+                    />
+                </div>
+
+                <div className='absolute bottom-0 left-0'>
+                    <Image
+                        src='/decorative-lines-bottom.png'
+                        alt='Decorative Lines Bottom'
+                        width={400}
+                        height={400}
+                        className='opacity-60'
+                    />
+                </div>
+
                 <Card
-                    className="w-full max-w-sm shadow-none border-0"
+                    className='w-full max-w-sm shadow-none border-0 relative z-10'
                     sx={{
                         backgroundColor: 'transparent',
-                        boxShadow: 'none'
+                        boxShadow: 'none',
                     }}
                 >
-                    <CardContent className="p-0">
+                    <CardContent className='p-0'>
                         {/* Logo */}
-                        <Box className="flex justify-center items-center mb-3">
-                            <Image src="/logos.png" alt="Logo" width={100} height={100} />
+                        <Box className='flex justify-center items-center mb-2'>
+                            <Image src='/logos.png' alt='Logo' width={90} height={90} />
                         </Box>
 
                         {/* Title */}
                         <Typography
-                            variant="h3"
-                            className="text-center font-bold mb-8"
+                            variant='h3'
+                            className='text-center font-bold mb-8'
                             style={{
-                                color: '#2E5266',
-                                fontSize: '2.5rem',
-                                fontWeight: '700'
+                                color: 'white',
+                                fontSize: '2.2rem',
+                                fontWeight: '700',
                             }}
                         >
                             Daftar
                         </Typography>
 
                         {/* Form */}
-                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-                            {/* Email Field */}
-                            <Box>
-                                <Typography
-                                    variant="body2"
-                                    className="mb-2 font-medium"
-                                    style={{
-                                        color: '#2E5266',
-                                        fontSize: '14px',
-                                        fontWeight: '500'
-                                    }}
-                                >
-                                    Email
-                                </Typography>
-                                <Controller
-                                    name="email"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            fullWidth
-                                            type="email"
-                                            placeholder="email@mail.com"
-                                            variant="outlined"
-                                            error={!!errors.email}
-                                            sx={{
-                                                '& .MuiOutlinedInput-root': {
-                                                    backgroundColor: 'white',
-                                                    borderRadius: '8px',
-                                                    height: '48px',
-                                                    fontSize: '14px',
-                                                    '& fieldset': {
-                                                        borderColor: '#E0E0E0',
-                                                        borderWidth: '1px',
-                                                    },
-                                                    '&:hover fieldset': {
-                                                        borderColor: '#BDBDBD',
-                                                    },
-                                                    '&.Mui-focused fieldset': {
-                                                        borderColor: '#FF6B35',
-                                                        borderWidth: '2px',
-                                                    },
-                                                    '&.Mui-error fieldset': {
-                                                        borderColor: '#f44336',
-                                                    },
-                                                },
-                                                '& .MuiOutlinedInput-input': {
-                                                    padding: '12px 14px',
-                                                    fontSize: '14px',
-                                                    '&::placeholder': {
-                                                        color: '#9E9E9E',
-                                                        opacity: 1,
-                                                    },
-                                                },
-                                            }}
-                                        />
-                                    )}
-                                />
-                                {errors.email && (
-                                    <FormHelperText error sx={{ margin: '4px 0 0 0', fontSize: '12px' }}>
-                                        {errors.email.message}
-                                    </FormHelperText>
-                                )}
-                            </Box>
+                        <form onSubmit={handleSubmit(onSubmit)} className='space-y-2'>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                    <CustomTextField
+                                        control={control}
+                                        size='medium'
+                                        error={!!errors.fullname}
+                                        name='fullname'
+                                        label='Nama Lengkap*'
+                                        InputLabelProps={{ style: { color: 'white' } }}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <CustomTextField
+                                        control={control}
+                                        size='medium'
+                                        error={!!errors.email}
+                                        name='email'
+                                        label='Email*'
+                                        InputLabelProps={{ style: { color: 'white' } }}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <CustomTextField
+                                        control={control}
+                                        inputFormat='PHONE'
+                                        size='medium'
+                                        error={!!errors.phone}
+                                        placeholder='0812xxxxxxx'
+                                        name='phone'
+                                        label='Phone*'
+                                        InputLabelProps={{ style: { color: 'white' } }}
+                                    />
+                                </Grid>
 
-                            {/* Mobile Phone Field */}
-                            <Box>
-                                <Typography
-                                    variant="body2"
-                                    className="mb-2 font-medium"
-                                    style={{
-                                        color: '#2E5266',
-                                        fontSize: '14px',
-                                        fontWeight: '500'
-                                    }}
-                                >
-                                    Phone
-                                </Typography>
-                                <Controller
-                                    name="mobilePhone"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            fullWidth
-                                            type="tel"
-                                            placeholder="0812xxxxxxx"
-                                            variant="outlined"
-                                            error={!!errors.mobilePhone}
-                                            sx={{
-                                                '& .MuiOutlinedInput-root': {
-                                                    backgroundColor: 'white',
-                                                    borderRadius: '8px',
-                                                    height: '48px',
-                                                    fontSize: '14px',
-                                                    '& fieldset': {
-                                                        borderColor: '#E0E0E0',
-                                                        borderWidth: '1px',
-                                                    },
-                                                    '&:hover fieldset': {
-                                                        borderColor: '#BDBDBD',
-                                                    },
-                                                    '&.Mui-focused fieldset': {
-                                                        borderColor: '#FF6B35',
-                                                        borderWidth: '2px',
-                                                    },
-                                                    '&.Mui-error fieldset': {
-                                                        borderColor: '#f44336',
-                                                    },
-                                                },
-                                                '& .MuiOutlinedInput-input': {
-                                                    padding: '12px 14px',
-                                                    fontSize: '14px',
-                                                    '&::placeholder': {
-                                                        color: '#9E9E9E',
-                                                        opacity: 1,
-                                                    },
-                                                },
-                                            }}
-                                        />
-                                    )}
-                                />
-                                {errors.mobilePhone && (
-                                    <FormHelperText error sx={{ margin: '4px 0 0 0', fontSize: '12px' }}>
-                                        {errors.mobilePhone.message}
-                                    </FormHelperText>
-                                )}
-                            </Box>
+                                <Grid item xs={12}>
+                                    <CustomTextField
+                                        control={control}
+                                        inputFormat='PASSWORD'
+                                        size='medium'
+                                        error={!!errors.password}
+                                        placeholder='••••••••'
+                                        name='password'
+                                        label='Password*'
+                                        InputLabelProps={{ style: { color: 'white' } }}
+                                    />
+                                </Grid>
 
-                            {/* New Password Field */}
-                            <Box>
-                                <Typography
-                                    variant="body2"
-                                    className="mb-2 font-medium"
-                                    style={{
-                                        color: '#2E5266',
-                                        fontSize: '14px',
-                                        fontWeight: '500'
-                                    }}
-                                >
-                                    New Password
-                                </Typography>
-                                <Controller
-                                    name="newPassword"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            fullWidth
-                                            type={showPassword ? 'text' : 'password'}
-                                            placeholder="••••••••"
-                                            variant="outlined"
-                                            error={!!errors.newPassword}
-                                            InputProps={{
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <IconButton
-                                                            onClick={() => setShowPassword(!showPassword)}
-                                                            edge="end"
-                                                            size="small"
-                                                            sx={{ marginRight: '4px' }}
-                                                        >
-                                                            <Icon
-                                                                icon={showPassword ? 'mdi:eye-off' : 'mdi:eye'}
-                                                                className="text-gray-500"
-                                                                style={{ fontSize: '20px' }}
-                                                            />
-                                                        </IconButton>
-                                                    </InputAdornment>
-                                                ),
-                                            }}
-                                            sx={{
-                                                '& .MuiOutlinedInput-root': {
-                                                    backgroundColor: 'white',
-                                                    borderRadius: '8px',
-                                                    height: '48px',
-                                                    fontSize: '14px',
-                                                    '& fieldset': {
-                                                        borderColor: '#E0E0E0',
-                                                        borderWidth: '1px',
-                                                    },
-                                                    '&:hover fieldset': {
-                                                        borderColor: '#BDBDBD',
-                                                    },
-                                                    '&.Mui-focused fieldset': {
-                                                        borderColor: '#FF6B35',
-                                                        borderWidth: '2px',
-                                                    },
-                                                    '&.Mui-error fieldset': {
-                                                        borderColor: '#f44336',
-                                                    },
-                                                },
-                                                '& .MuiOutlinedInput-input': {
-                                                    padding: '12px 14px',
-                                                    fontSize: '14px',
-                                                    '&::placeholder': {
-                                                        color: '#9E9E9E',
-                                                        opacity: 1,
-                                                    },
-                                                },
-                                            }}
-                                        />
-                                    )}
-                                />
-                                {errors.newPassword && (
-                                    <FormHelperText error sx={{ margin: '4px 0 0 0', fontSize: '12px' }}>
-                                        {errors.newPassword.message}
-                                    </FormHelperText>
-                                )}
-                            </Box>
-
-                            {/* Confirm Password Field */}
-                            <Box>
-                                <Typography
-                                    variant="body2"
-                                    className="mb-2 font-medium"
-                                    style={{
-                                        color: '#2E5266',
-                                        fontSize: '14px',
-                                        fontWeight: '500'
-                                    }}
-                                >
-                                    Confirm Password
-                                </Typography>
-                                <Controller
-                                    name="confirmPassword"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            fullWidth
-                                            type={showConfirmPassword ? 'text' : 'password'}
-                                            placeholder="••••••••"
-                                            variant="outlined"
-                                            error={!!errors.confirmPassword}
-                                            InputProps={{
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <IconButton
-                                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                                            edge="end"
-                                                            size="small"
-                                                            sx={{ marginRight: '4px' }}
-                                                        >
-                                                            <Icon
-                                                                icon={showConfirmPassword ? 'mdi:eye-off' : 'mdi:eye'}
-                                                                className="text-gray-500"
-                                                                style={{ fontSize: '20px' }}
-                                                            />
-                                                        </IconButton>
-                                                    </InputAdornment>
-                                                ),
-                                            }}
-                                            sx={{
-                                                '& .MuiOutlinedInput-root': {
-                                                    backgroundColor: 'white',
-                                                    borderRadius: '8px',
-                                                    height: '48px',
-                                                    fontSize: '14px',
-                                                    '& fieldset': {
-                                                        borderColor: '#E0E0E0',
-                                                        borderWidth: '1px',
-                                                    },
-                                                    '&:hover fieldset': {
-                                                        borderColor: '#BDBDBD',
-                                                    },
-                                                    '&.Mui-focused fieldset': {
-                                                        borderColor: '#FF6B35',
-                                                        borderWidth: '2px',
-                                                    },
-                                                    '&.Mui-error fieldset': {
-                                                        borderColor: '#f44336',
-                                                    },
-                                                },
-                                                '& .MuiOutlinedInput-input': {
-                                                    padding: '12px 14px',
-                                                    fontSize: '14px',
-                                                    '&::placeholder': {
-                                                        color: '#9E9E9E',
-                                                        opacity: 1,
-                                                    },
-                                                },
-                                            }}
-                                        />
-                                    )}
-                                />
-                                {errors.confirmPassword && (
-                                    <FormHelperText error sx={{ margin: '4px 0 0 0', fontSize: '12px' }}>
-                                        {errors.confirmPassword.message}
-                                    </FormHelperText>
-                                )}
-                            </Box>
+                                <Grid item xs={12}>
+                                    <CustomTextField
+                                        control={control}
+                                        inputFormat='PASSWORD'
+                                        size='medium'
+                                        error={!!errors.confirm_password}
+                                        placeholder='••••••••'
+                                        name='confirm_password'
+                                        label='Konfirmasi Password*'
+                                        InputLabelProps={{ style: { color: 'white' } }}
+                                    />
+                                </Grid>
+                            </Grid>
 
                             {/* Submit Button */}
-                            <Box className="pt-4">
+                            <Box className='pt-4'>
                                 <Button
-                                    type="submit"
+                                    type='submit'
                                     fullWidth
-                                    variant="contained"
-                                    disabled={isSubmitting}
+                                    variant='contained'
+                                    disabled={isLoadingRegister}
                                     sx={{
-                                        backgroundColor: '#FEC106',
+                                        backgroundColor: '#f59e0b',
                                         '&:hover': {
-                                            backgroundColor: '#FEC106',
+                                            backgroundColor: '#d97706',
                                         },
                                         borderRadius: '8px',
                                         height: '48px',
@@ -426,12 +210,12 @@ const SignUpComponent: React.FC = () => {
                                         fontWeight: '600',
                                         textTransform: 'none',
                                         boxShadow: 'none',
-                                        color: "#0159A3"
+                                        color: 'white',
                                     }}
                                 >
-                                    {isSubmitting ? (
-                                        <Box className="flex items-center gap-2">
-                                            <Icon icon="mdi:loading" className="animate-spin" />
+                                    {isLoadingRegister ? (
+                                        <Box className='flex items-center gap-2'>
+                                            <Icon icon='mdi:loading' className='animate-spin' />
                                             Memproses...
                                         </Box>
                                     ) : (
@@ -442,20 +226,20 @@ const SignUpComponent: React.FC = () => {
                         </form>
 
                         {/* Login Link */}
-                        <Box className="text-center mt-6">
+                        <Box className='text-center mt-6'>
                             <Typography
-                                variant="body2"
+                                variant='body2'
                                 style={{
-                                    color: '#2E5266',
+                                    color: 'white',
                                     fontSize: '14px',
                                 }}
                             >
                                 Sudah punya akun?{' '}
                                 <Typography
-                                    component="span"
+                                    component='span'
                                     onClick={() => router.push('/auth/login')}
                                     sx={{
-                                        color: '#1976D2',
+                                        color: 'white',
                                         textDecoration: 'none',
                                         fontWeight: '500',
                                         cursor: 'pointer',
@@ -464,17 +248,15 @@ const SignUpComponent: React.FC = () => {
                                         },
                                     }}
                                 >
-                                    Login Sekarang
+                                    Masuk Sekarang
                                 </Typography>
                             </Typography>
                         </Box>
                     </CardContent>
                 </Card>
             </div>
-
-
         </div>
-    );
-};
+    )
+}
 
-export default SignUpComponent;
+export default SignUpComponent
