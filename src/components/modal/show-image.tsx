@@ -15,18 +15,16 @@ const ShowImage = ({ open, toggle, image }: Props) => {
             toggle={toggle}
             onClose={toggle}
             titleColor='text-white'
-            hiddenClose
-            maxWidth='xs'
+            maxWidth='md'
             hideButton
             hideTitle={true}
             PaperProps={{
                 style: {
-                    backgroundColor: 'transparent',
                     boxShadow: 'none',
                 },
             }}
         >
-            <Stack width={300} height={'auto'}>
+            <Stack width={600} height={'auto'} sx={{ m: 'auto', pb: 5 }}>
                 <img src={image} alt='image' />
             </Stack>
         </CustomStyledModal>

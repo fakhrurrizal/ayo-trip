@@ -166,7 +166,7 @@ export default function CustomTextField<T extends FieldValues = Record<string, a
                         }}
                         helperText={helperText}
                         type={!isPasswordType ? moreProps.type : showPassword ? 'text' : 'password'}
-                        size='small'
+                        size='medium'
                         disabled={disabled}
                         InputLabelProps={{ shrink: true }}
                         placeholder={isReadOnly ? undefined : placeholder ? placeholder : `${props?.label || ''}...`}

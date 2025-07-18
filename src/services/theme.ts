@@ -64,7 +64,7 @@ export const useGetTheme = () => {
                 },
 
                 typography: {
-                    fontSize: 10.5,
+                    fontSize: 13,
 
                     fontWeightRegular: 500,
 

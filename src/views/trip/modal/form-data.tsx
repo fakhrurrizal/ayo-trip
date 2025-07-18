@@ -44,25 +44,24 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
         const file = event.target.files[0]
 
         if (file) {
-            // setFilenameUpload(file.name)
             const form = new FormData()
             form.append('file', file)
             setLoadingImage(true)
             try {
                 const encodedKey = getEncodedKey()
 
-                const response = await axios.post(getApi('file') + '?folder=employee', form, {
+                const response = await axios.post(getApi('file') + '', form, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         Authorization: `${accessToken}`,
                         'X-API-KEY': encodedKey,
                     },
                 })
-                // console.log(response.data.data)
-                setValue('image', response.data.data.full_url)
+                setValue('image', [response.data.data.full_url])
                 setLoadingImage(false)
             } catch (error) {
                 console.log(error)
+                setLoadingImage(false)
             }
         }
     }
@@ -70,25 +69,26 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
     return (
         <>
             <Grid container spacing={2}>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12}>
                     <CustomTextField control={control} name='name' label='Nama Trip' placeholder='Masukkan nama trip' />
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12}>
                     <CustomTextField
                         control={control}
                         name='base_price'
                         label='Harga Dasar'
                         placeholder='Masukkan harga trip'
-                        type='number'
+                        inputFormat='PRICE'
+                        size='medium'
                     />
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12}>
                     <CustomTextField control={control} name='location' label='Lokasi' placeholder='Masukkan lokasi' />
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12}>
                     <CustomTextField
                         control={control}
                         name='description'
@@ -99,7 +99,7 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
                     />
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12}>
                     <ServerSideAutoComplete<TripForm, { id: number; label: string }, any>
                         control={control}
                         endpoint='category'
@@ -118,7 +118,7 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
                     />
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12}>
                     <ServerSideAutoComplete<TripForm, { id: number; label: string }, any>
                         control={control}
                         endpoint='destination_type'
@@ -138,18 +138,33 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
                 </Grid>
 
                 <Grid item xs={12} md={4}>
-                    <CustomTextField control={control} name='max_capacity' label='Kapasitas Maksimal' type='number' />
+                    <CustomTextField
+                        control={control}
+                        name='max_capacity'
+                        label='Kapasitas Maksimal'
+                        inputFormat='NUMBER'
+                    />
                 </Grid>
 
                 <Grid item xs={12} md={4}>
-                    <CustomTextField control={control} name='min_participants' label='Minimal Peserta' type='number' />
+                    <CustomTextField
+                        control={control}
+                        name='min_participants'
+                        label='Minimal Peserta'
+                        inputFormat='NUMBER'
+                    />
                 </Grid>
 
                 <Grid item xs={12} md={4}>
-                    <CustomTextField control={control} name='duration_days' label='Durasi (hari)' type='number' />
+                    <CustomTextField
+                        control={control}
+                        name='duration_days'
+                        label='Durasi (hari)'
+                        inputFormat='NUMBER'
+                    />
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12}>
                     <CustomTextField
                         control={control}
                         name='latitude'
@@ -159,7 +174,7 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
                     />
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12}>
                     <CustomTextField
                         control={control}
                         name='longitude'
@@ -174,6 +189,7 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
                         label='Gambar'
                         variant='outlined'
                         fullWidth
+                        size='medium'
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position='end'>
@@ -184,7 +200,7 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
                                         style={{ display: 'none' }}
                                         onChange={handleFileChange}
                                     />
-                                    {watch('image') ? (
+                                    {watch('image')?.[0] ? (
                                         <>
                                             {!readOnly && (
                                                 <Tooltip title='Hapus Gambar'>
@@ -219,12 +235,12 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
                             ),
                             readOnly: true,
                         }}
-                        value={watch('image') ? watch('image')?.split('/').pop() : ''}
+                        value={watch('image')?.[0] ? watch('image')?.[0]?.split('/').pop() : ''}
                     />
                 </Grid>
-                {openImage && <ShowImage open={openImage} toggle={toggleImage} image={watch('image') || ''} />}
+                {openImage && <ShowImage open={openImage} toggle={toggleImage} image={watch('image')?.[0] || ''} />}
 
-                <Grid item xs={12} md={6} sx={{ display: 'flex', gap: 3, mt: -2 }}>
+                <Grid item xs={12} sx={{ display: 'flex', gap: 3, mt: -2 }}>
                     <SwitchComponent control={control} label='Status' name='status' readOnly={readOnly} />
                 </Grid>
             </Grid>
@@ -250,7 +266,7 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
                             }}
                         />
                     </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} >
                     <TextField
                         control={control}
                         name='code'
@@ -260,10 +276,10 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
                         isReadOnly={readOnly}
                     />
                 </Grid>
-                <Grid item xs={12} md={6} sx={{ display: 'flex', gap: 3, mt: -2 }}>
+                <Grid item xs={12}  sx={{ display: 'flex', gap: 3, mt: -2 }}>
                     <SwitchComponent control={control} label='Status' name='status' readOnly={readOnly} />
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} >
                     <TextField
                         control={control}
                         name='name'
@@ -273,7 +289,7 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
                         InputProps={{ readOnly }}
                     />
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} >
                     <TextField
                         control={control}
                         name='email'
@@ -283,7 +299,7 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
                         InputProps={{ readOnly }}
                     />
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} >
                     <TextField
                         control={control}
                         name='phone'
@@ -294,7 +310,7 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
                         type='number'
                     />
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} >
                     <ServerSideAutoComplete<ContactForm, { id: number; label: string }, ResponseBranch>
                         control={control}
                         endpoint='branch'
@@ -375,7 +391,7 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
                             </Box>
                             {errors.is_customer && <p className='text-red-500'>{errors.is_customer.message}</p>}
                         </Grid>
-                        {(isCustomerSelected && !readOnly) || (readOnly && form.formState.defaultValues?.post_paid) ? <Grid item xs={12} md={6}>
+                        {(isCustomerSelected && !readOnly) || (readOnly && form.formState.defaultValues?.post_paid) ? <Grid item xs={12} >
                             <StaticAutoComplete
                                 options={postPaidSchema}
                                 name='post_paid'
@@ -390,7 +406,7 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
 
                 {(isEmployee && businessTypeCode == "laundry") && (
                     <>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} >
                             <TextField
                                 control={control}
                                 name='account_name'
@@ -400,7 +416,7 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
                                 InputProps={{ readOnly }}
                             />
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} >
                             <TextField
                                 control={control}
                                 name='account_number'
@@ -410,7 +426,7 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
                                 InputProps={{ readOnly }}
                             />
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} >
                             <TextField
                                 control={control}
                                 name='npwp'
@@ -420,7 +436,7 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
                                 InputProps={{ readOnly }}
                             />
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} >
                             <CustomTextField
                                 control={control}
                                 name='salary'
@@ -431,7 +447,7 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
                                 InputProps={{ readOnly }}
                             />
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} >
                             <CustomTextField
                                 control={control}
                                 name='employee_id'
@@ -441,7 +457,7 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
                                 InputProps={{ readOnly }}
                             />
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} >
                             <DatePicker
                                 readOnly={readOnly}
                                 sx={{ backgroundColor: 'white', borderRadius: 1 }}
@@ -465,7 +481,7 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
                             />
                         </Grid>
                        
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} >
                             <TextField
                                 control={control}
                                 name='position'
@@ -476,7 +492,7 @@ const FormDataTrip = ({ form, readOnly = false }: Props) => {
                             />
                         </Grid>
 
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} >
                             <StaticAutoComplete
                                 options={salary_type}
                                 name='salary_type'

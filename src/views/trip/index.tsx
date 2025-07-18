@@ -1,20 +1,20 @@
-import { SelectChangeEvent } from '@mui/material'
-import dayjs from 'dayjs'
+import HeaderSectionTableCustom from '@/components/custom-table/header'
+import PaginationSectionTableCustom from '@/components/custom-table/pagination'
+import ActiveInactiveRendererTableCustom from '@/components/custom-table/table/active-inactive-status-renderer'
+import CustomStyledTable from '@/components/custom-table/table/custom-styled-table'
+import CustomStyledTableContainer from '@/components/custom-table/table/custom-styled-table-container'
+import { CustomStyledTableData, CustomStyledTableHead } from '@/components/custom-table/table/custom-styled-table-head'
+import CustomStyledTableRow from '@/components/custom-table/table/custom-styled-table-row'
+import TableHeaderCustomTable from '@/components/custom-table/table/header'
+import ToolbarSectionTableCustom from '@/components/custom-table/toolbar'
+import ShowImage from '@/components/modal/show-image'
+import { Order } from '@/interfaces'
+import { useTripParams } from '@/utils/quries/use-destination.query'
+import { SelectChangeEvent, styled } from '@mui/material'
 import { useRouter } from 'next/router'
 import { Fragment, useCallback, useEffect, useState } from 'react'
-import { Order } from '@/interfaces'
-import HeaderSectionTableCustom from '@/components/custom-table/header'
-import ToolbarSectionTableCustom from '@/components/custom-table/toolbar'
-import CustomStyledTableContainer from '@/components/custom-table/table/custom-styled-table-container'
-import CustomStyledTable from '@/components/custom-table/table/custom-styled-table'
-import TableHeaderCustomTable from '@/components/custom-table/table/header'
-import CustomStyledTableRow from '@/components/custom-table/table/custom-styled-table-row'
-import { CustomStyledTableData, CustomStyledTableHead } from '@/components/custom-table/table/custom-styled-table-head'
-import ActiveInactiveRendererTableCustom from '@/components/custom-table/table/active-inactive-status-renderer'
-import PaginationSectionTableCustom from '@/components/custom-table/pagination'
-import { useTripParams } from '@/utils/quries/use-destination.query'
-import RowOptions from './table/row-options'
 import AddTrip from './modal/add'
+import RowOptions from './table/row-options'
 
 const HeaderItems = [
     {
@@ -47,10 +47,21 @@ const HeaderItems = [
     },
 ]
 
+const ImageThumbnail = styled('img')({
+    width: 60,
+    height: 60,
+    objectFit: 'cover',
+    borderRadius: 8,
+    cursor: 'pointer',
+    border: '1px solid #ddd',
+})
+
 const TripListPageViews = () => {
     const [pageSize, setPageSize] = useState<number>(10)
 
     const [page, setPage] = useState<number>(1)
+
+    const [openImage, setOpenImage] = useState(false)
 
     const [searchValue, setSearchValue] = useState('')
 
@@ -60,9 +71,9 @@ const TripListPageViews = () => {
 
     const router = useRouter()
 
-    dayjs.locale('id')
-
     const { sort, status } = router.query
+
+    const toggleImage = () => setOpenImage(!openImage)
 
     const { data: { data: TripList = [], recordsFiltered = 0, recordsTotal = 0 } = { data: [] }, isLoading } =
         useTripParams({
@@ -126,9 +137,21 @@ const TripListPageViews = () => {
                                             <CustomStyledTableRow>
                                                 <CustomStyledTableHead>{item?.name}</CustomStyledTableHead>
 
+                                                <CustomStyledTableData>
+                                                    {item?.trip_category?.name}
+                                                </CustomStyledTableData>
+                                                <CustomStyledTableData>
+                                                    {item?.destination_type?.name}
+                                                </CustomStyledTableData>
                                                 <CustomStyledTableData>{item?.description}</CustomStyledTableData>
                                                 <CustomStyledTableData>
-                                                    {item?.destination_type.name}
+                                                    {item?.image?.[0] && (
+                                                        <ImageThumbnail
+                                                            src={item.image[0]}
+                                                            alt='Thumbnail'
+                                                            onClick={toggleImage}
+                                                        />
+                                                    )}
                                                 </CustomStyledTableData>
 
                                                 <CustomStyledTableData className='text-center'>
@@ -139,14 +162,19 @@ const TripListPageViews = () => {
                                                     <RowOptions data={item} />
                                                 </CustomStyledTableData>
                                             </CustomStyledTableRow>
+                                            {openImage && (
+                                                <ShowImage
+                                                    open={openImage}
+                                                    toggle={toggleImage}
+                                                    image={item.image?.[0] || ''}
+                                                />
+                                            )}
                                         </Fragment>
                                     )
                                 })}
                         </tbody>
-                        {/* table body */}
                     </CustomStyledTable>
                 </CustomStyledTableContainer>
-                {/* table section */}
 
                 {/* Paginasi */}
                 <PaginationSectionTableCustom
