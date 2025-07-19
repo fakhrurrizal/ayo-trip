@@ -174,6 +174,22 @@ const PopularDestinationsSection: React.FC = () => {
         e.stopPropagation()
     }, [])
 
+    const generateWhatsAppLink = (category: string) => {
+        const phoneNumber = '6285183266453'
+
+        const message = `
+            Halo, saya ingin konsultasi tentang ${category}
+    
+          `.trim()
+
+        return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
+    }
+
+    const handleConfirmPayment = (message: string) => {
+        const whatsappUrl = generateWhatsAppLink(message)
+        window.open(whatsappUrl, '_blank')
+    }
+
     // Render loading state untuk SSR
     if (!isClient) {
         return (
@@ -300,18 +316,18 @@ const PopularDestinationsSection: React.FC = () => {
                                         fontWeight: 'bold',
                                         ...(selectedCategory === category.id
                                             ? {
-                                                  backgroundColor: '#0ea5e9',
-                                                  color: 'white',
-                                                  '&:hover': {
-                                                      backgroundColor: '#0284c7',
-                                                  },
-                                              }
+                                                backgroundColor: '#0ea5e9',
+                                                color: 'white',
+                                                '&:hover': {
+                                                    backgroundColor: '#0284c7',
+                                                },
+                                            }
                                             : {
-                                                  color: '#64748b',
-                                                  '&:hover': {
-                                                      backgroundColor: '#f1f5f9',
-                                                  },
-                                              }),
+                                                color: '#64748b',
+                                                '&:hover': {
+                                                    backgroundColor: '#f1f5f9',
+                                                },
+                                            }),
                                     }}
                                 >
                                     {category.name}
@@ -462,7 +478,7 @@ const PopularDestinationsSection: React.FC = () => {
                 </Grid>
 
                 {/* CTA Section */}
-                <Box sx={{ textAlign: 'center' }}>
+                {/* <Box sx={{ textAlign: 'center' }}>
                     <Button
                         variant='contained'
                         size='large'
@@ -480,7 +496,7 @@ const PopularDestinationsSection: React.FC = () => {
                     >
                         Jelajahi Semua Destinasi
                     </Button>
-                </Box>
+                </Box> */}
             </Container>
 
             {/* Modal for Destination Detail */}
@@ -572,7 +588,7 @@ const PopularDestinationsSection: React.FC = () => {
                             </Box>
 
                             <Stack direction='row' spacing={2}>
-                                <Button
+                                {/* <Button
                                     variant='contained'
                                     fullWidth
                                     sx={{
@@ -585,10 +601,11 @@ const PopularDestinationsSection: React.FC = () => {
                                     }}
                                 >
                                     Lihat Paket Tour
-                                </Button>
+                                </Button> */}
                                 <Button
                                     variant='outlined'
                                     fullWidth
+                                    onClick={() => handleConfirmPayment(selectedDestination.name)}
                                     sx={{
                                         borderColor: '#0ea5e9',
                                         color: '#0ea5e9',

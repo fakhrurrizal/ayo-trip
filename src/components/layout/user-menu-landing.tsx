@@ -140,19 +140,17 @@ export const UserMenuLanding = () => {
                     />
                 </ListItem>
                 <Divider className='!my-[5px]' />
-                {user?.role?.id === 1 &&
-                    (
-                        <ListItem disablePadding sx={{ marginBottom: 1 }}>
-                            {/* <ListItemButton onClick={handleProfile}> */}
-                            <ListItemButton onClick={handleDashboard}>
-                                <ListItemIcon>
-                                    <PersonIcon />
-                                </ListItemIcon>
-                                <ListItemText>Dashboard</ListItemText>
-                            </ListItemButton>
-                        </ListItem>
-                    )}
-
+                {user?.role?.id === 1 && (
+                    <ListItem disablePadding sx={{ marginBottom: 1 }}>
+                        {/* <ListItemButton onClick={handleProfile}> */}
+                        <ListItemButton onClick={handleDashboard}>
+                            <ListItemIcon>
+                                <PersonIcon />
+                            </ListItemIcon>
+                            <ListItemText>Dashboard</ListItemText>
+                        </ListItemButton>
+                    </ListItem>
+                )}
 
                 <Divider sx={{ marginY: 1 }} />
 

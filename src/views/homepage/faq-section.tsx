@@ -137,6 +137,22 @@ const FAQSection: React.FC = () => {
         return category ? category.color : '#64748b'
     }
 
+    const generateWhatsAppLink = () => {
+        const phoneNumber = '6285183266453'
+
+        const message = `
+            Halo, saya ingin bertanya
+    
+          `.trim()
+
+        return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
+    }
+
+    const handleConfirmPayment = () => {
+        const whatsappUrl = generateWhatsAppLink()
+        window.open(whatsappUrl, '_blank')
+    }
+
     return (
         <Box sx={{ py: 8, backgroundColor: '#ffffff' }}>
             <Container maxWidth='lg'>
@@ -204,20 +220,20 @@ const FAQSection: React.FC = () => {
                                         px: { xs: 2, sm: 3 },
                                         ...(selectedCategory === category.id
                                             ? {
-                                                  backgroundColor: category.color,
-                                                  color: 'white',
-                                                  '&:hover': {
-                                                      backgroundColor: category.color,
-                                                      filter: 'brightness(0.9)',
-                                                  },
-                                              }
+                                                backgroundColor: category.color,
+                                                color: 'white',
+                                                '&:hover': {
+                                                    backgroundColor: category.color,
+                                                    filter: 'brightness(0.9)',
+                                                },
+                                            }
                                             : {
-                                                  color: '#64748b',
-                                                  '&:hover': {
-                                                      backgroundColor: '#f1f5f9',
-                                                      color: category.color,
-                                                  },
-                                              }),
+                                                color: '#64748b',
+                                                '&:hover': {
+                                                    backgroundColor: '#f1f5f9',
+                                                    color: category.color,
+                                                },
+                                            }),
                                     }}
                                 >
                                     {category.name}
@@ -392,6 +408,7 @@ const FAQSection: React.FC = () => {
                                 <Button
                                     variant='contained'
                                     fullWidth
+                                    onClick={handleConfirmPayment}
                                     sx={{
                                         backgroundColor: 'white',
                                         color: '#0ea5e9',

@@ -78,7 +78,6 @@ const WhyChooseSection = () => {
     const generateWhatsAppLink = (category: string) => {
         const phoneNumber = '6285183266453'
 
-
         const message = `
             Halo, saya ingin ${category}
     
@@ -298,7 +297,7 @@ const WhyChooseSection = () => {
                         <Button
                             variant='contained'
                             size='large'
-                            onClick={() => handleConfirmPayment("Lihat jadwal Open Trip")}
+                            onClick={() => handleConfirmPayment('Lihat jadwal Open Trip')}
                             startIcon={<Icon icon='mdi:calendar-check' width={20} height={20} />}
                             sx={{
                                 backgroundColor: '#0ea5e9',
@@ -316,7 +315,7 @@ const WhyChooseSection = () => {
                         <Button
                             variant='outlined'
                             size='large'
-                            onClick={() => handleConfirmPayment("Buat jadwal Private Trip")}
+                            onClick={() => handleConfirmPayment('Buat jadwal Private Trip')}
                             startIcon={<Icon icon='mdi:account-group' width={20} height={20} />}
                             sx={{
                                 borderColor: '#0ea5e9',
