@@ -246,7 +246,7 @@ const TourDetailPage = () => {
                                                 if (user) {
                                                     router.push(`/payment/${tour.id}`)
                                                 } else {
-                                                    router.push(`/login?returnUrl=/payment/${tour.id}`)
+                                                    router.push(`/auth/login?returnUrl=/payment/${tour.id}`)
                                                 }
                                             }}
                                         >
