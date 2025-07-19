@@ -75,8 +75,11 @@ const LoginPageViews = () => {
             if (returnUrlQuery) {
                 return router.replace(returnUrlQuery as string)
             }
-
-            return router.push(pathnames.dashboard)
+            if (user.role.id === 1) {
+                router.push(pathnames.dashboard)
+            } else {
+                router.push('/')
+            }
         } catch (error) {
             console.error('failed to login', error)
         }
@@ -96,7 +99,7 @@ const LoginPageViews = () => {
 
             <div
                 className='w-full lg:w-1/2 flex items-center justify-center p-8 relative'
-                style={{ backgroundColor: '#0ea5e9' }}
+                style={{ backgroundColor: '#B6E8FF' }}
             >
                 <div className='absolute top-0 right-0'>
                     <Image
@@ -132,7 +135,7 @@ const LoginPageViews = () => {
                         <Typography
                             variant='h3'
                             className='text-center font-bold mb-8'
-                            style={{ color: 'white', fontSize: '2.5rem', fontWeight: '700' }}
+                            style={{ color: '#116487', fontSize: '2.5rem', fontWeight: '700' }}
                         >
                             Login
                         </Typography>
@@ -197,13 +200,13 @@ const LoginPageViews = () => {
 
                         {/* Link ke Register */}
                         <Box className='text-center mt-6'>
-                            <Typography variant='body2' style={{ color: 'white', fontSize: '14px' }}>
+                            <Typography variant='body2' style={{ color: '#116487', fontSize: '14px' }}>
                                 Belum punya akun?{' '}
                                 <Typography
                                     component='span'
                                     onClick={() => router.push('/auth/register')}
                                     sx={{
-                                        color: 'white',
+                                        color: '#116487',
                                         textDecoration: 'none',
                                         fontWeight: '500',
                                         cursor: 'pointer',
@@ -221,7 +224,7 @@ const LoginPageViews = () => {
                                 component='span'
                                 onClick={() => router.push('/')}
                                 sx={{
-                                    color: 'white',
+                                    color: '#116487',
                                     textDecoration: 'none',
                                     fontWeight: '500',
                                     cursor: 'pointer',

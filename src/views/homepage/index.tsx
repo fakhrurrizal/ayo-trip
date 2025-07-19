@@ -1,4 +1,5 @@
-// components/HomepageViews.tsx
+'use client'
+
 import { getNavbarLayout } from '@/components'
 import { NextPageWithLayout } from '@/utils'
 import ToursSection from '@/views/tour-scetion'

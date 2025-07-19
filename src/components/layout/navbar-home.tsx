@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useEffect, ReactNode } from 'react'
 import {
     AppBar,
@@ -30,15 +32,25 @@ const NavbarHome = ({ children }: { children: ReactNode }) => {
 
     const router = useRouter()
 
+    const [isClient, setIsClient] = useState(false)
+
+    useEffect(() => {
+        setIsClient(true)
+    }, [])
+
     useEffect(() => {
         const handleScroll = () => {
-            const isScrolled = window.scrollY > 50
-            setScrolled(isScrolled)
+            if (typeof window !== 'undefined') {
+                const isScrolled = window.scrollY > 50
+                setScrolled(isScrolled)
+            }
         }
 
-        window.addEventListener('scroll', handleScroll)
+        if (typeof window !== 'undefined') {
+            window.addEventListener('scroll', handleScroll)
 
-        return () => window.removeEventListener('scroll', handleScroll)
+            return () => window.removeEventListener('scroll', handleScroll)
+        }
     }, [])
 
     const handleDrawerToggle = () => {
@@ -46,9 +58,11 @@ const NavbarHome = ({ children }: { children: ReactNode }) => {
     }
 
     const navItems = [
-        { label: 'Explore', icon: 'mdi:compass-outline' },
-        { label: 'Destinasi', icon: 'mdi:map-marker-outline' },
+        { label: 'Explore', icon: 'mdi:compass-outline', section: '#explore' },
+        { label: 'Destinasi', icon: 'mdi:map-marker-outline', section: '#destination' },
     ]
+
+    const isHome = router.pathname === '/'
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -60,6 +74,13 @@ const NavbarHome = ({ children }: { children: ReactNode }) => {
                     <ListItem key={item.label} disablePadding>
                         <Button
                             fullWidth
+                            onClick={() => {
+                                const section = document.getElementById(item.section as string)
+                                if (section) {
+                                    window.history.pushState(null, '', `${item.section}`)
+                                    section.scrollIntoView({ behavior: 'smooth' })
+                                }
+                            }}
                             startIcon={<Icon icon={item.icon} />}
                             sx={{
                                 justifyContent: 'flex-start',
@@ -122,7 +143,7 @@ const NavbarHome = ({ children }: { children: ReactNode }) => {
                     backgroundColor: scrolled ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
                     backdropFilter: scrolled ? 'blur(10px)' : 'none',
                     transition: 'all 0.3s ease-in-out',
-                    borderBottom: scrolled ? '1px solid rgba(0, 0, 0, 0.12)' : 'none',
+                    borderBottom: isClient && scrolled ? '1px solid rgba(0, 0, 0, 0.12)' : 'none',
                 }}
             >
                 <Container maxWidth='xl'>
@@ -138,15 +159,24 @@ const NavbarHome = ({ children }: { children: ReactNode }) => {
                                     <Button
                                         key={item.label}
                                         startIcon={<Icon icon={item.icon} />}
+                                        onClick={() => {
+                                            const section = document.getElementById(item.section as string)
+                                            if (section) {
+                                                window.history.pushState(null, '', `#${item.section}`)
+                                                section.scrollIntoView({ behavior: 'smooth' })
+                                            }
+                                        }}
                                         sx={{
                                             mx: 1,
-                                            color: scrolled ? '#64748b' : 'white',
+                                            color: isHome && !scrolled ? 'white' : scrolled ? '#64748b' : '#64748b',
                                             fontWeight: 500,
                                             '&:hover': {
                                                 backgroundColor: scrolled
                                                     ? 'rgba(14, 165, 233, 0.08)'
-                                                    : 'rgba(255, 255, 255, 0.1)',
-                                                color: scrolled ? '#0ea5e9' : 'white',
+                                                    : isHome
+                                                      ? 'rgba(255, 255, 255, 0.1)'
+                                                      : 'rgba(100, 116, 139, 0.1)',
+                                                color: '#0ea5e9',
                                             },
                                         }}
                                     >
@@ -204,7 +234,7 @@ const NavbarHome = ({ children }: { children: ReactNode }) => {
                                     aria-label='open drawer'
                                     edge='start'
                                     onClick={handleDrawerToggle}
-                                    sx={{ color: scrolled ? '#64748b' : 'white' }}
+                                    sx={{ color: '#64748b' }}
                                 >
                                     <Icon icon='mdi:menu' width={24} height={24} />
                                 </IconButton>
@@ -214,7 +244,6 @@ const NavbarHome = ({ children }: { children: ReactNode }) => {
                 </Container>
             </AppBar>
 
-            {/* Mobile drawer */}
             <Drawer
                 variant='temporary'
                 open={mobileOpen}
@@ -229,7 +258,32 @@ const NavbarHome = ({ children }: { children: ReactNode }) => {
             >
                 {drawer}
             </Drawer>
-            {children}
+
+            {isHome ? (
+                children
+            ) : (
+                <Box
+                    component='main'
+                    sx={({ breakpoints }) => ({
+                        flexGrow: 1,
+                        paddingY: 3,
+                        paddingX: 6,
+                        minHeight: `calc(100vh - ${65}px)`,
+                        marginTop: `calc(${80}px)`,
+                        borderTopLeftRadius: theme => theme.shape.borderRadius + 'px',
+                        borderTopRightRadius: theme => theme.shape.borderRadius + 'px',
+                        marginRight: '0px',
+                        [breakpoints.down('md')]: {
+                            marginX: '8px',
+                            paddingRight: 2,
+                            paddingY: 1,
+                        },
+                    })}
+                    className='bg-[#f8f7fa] !rounded-md'
+                >
+                    {children}
+                </Box>
+            )}
         </>
     )
 }

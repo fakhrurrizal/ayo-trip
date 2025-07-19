@@ -49,6 +49,7 @@ export const useTripParams = (args: PaginationArgs<any>) => {
     const query: Record<string, string | number> = {
         limit: Number(pageSize),
         page: Number(pageIndex),
+        app_id: 2,
     }
 
     if (order) {
@@ -80,5 +81,23 @@ export const useTripParams = (args: PaginationArgs<any>) => {
         },
         refetchOnWindowFocus: false,
         queryKey: ['LIST_TRIP_ALL', query, args],
+    })
+}
+
+export const useTripID = (id: number) => {
+    const endpoint = queryString.stringifyUrl({
+        url: getApi('trip') + '/' + id,
+    })
+
+    return useQuery({
+        queryFn: async () => {
+            if (id) {
+                const res = await axiosInterceptor.get<any>(endpoint)
+
+                return res.data?.data
+            }
+        },
+        refetchOnWindowFocus: true,
+        queryKey: [' TRIP_ID', id],
     })
 }

@@ -1,13 +1,13 @@
-import MuiTextField, { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField'
-import { Controller, type Control, type FieldValues, type Path } from 'react-hook-form'
-import InputAdornment from '@mui/material/InputAdornment'
-import IconButton from '@mui/material/IconButton'
-import { useState, useMemo } from 'react'
-import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded'
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded'
+import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded'
+import { FormControl, MenuItem, Select, SelectChangeEvent } from '@mui/material'
+import IconButton from '@mui/material/IconButton'
+import InputAdornment from '@mui/material/InputAdornment'
+import { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import { FormControl, MenuItem, SelectChangeEvent } from '@mui/material'
-import { Select } from '@mui/material'
+import { useMemo, useState } from 'react'
+import { Controller, type Control, type FieldValues, type Path } from 'react-hook-form'
+import { MUITextField } from '../mui'
 import { NumberMaskInput, NumberMaskInputComma, PhoneMaskInput } from './input-mask.component'
 
 export type TextFieldProps<T extends FieldValues = Record<string, any>> = Omit<MuiTextFieldProps, 'name'> & {
@@ -128,7 +128,7 @@ export default function CustomTextField<T extends FieldValues = Record<string, a
                 const { onChange, ...moreField } = field
 
                 return (
-                    <MuiTextField
+                    <MUITextField
                         {...moreProps}
                         {...moreField}
                         error={error}

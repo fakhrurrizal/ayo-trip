@@ -1,9 +1,22 @@
 // components/HeroSection.tsx
-import React from 'react'
-import { Box, Container, Typography, TextField, InputAdornment, IconButton, Paper } from '@mui/material'
+import { ServerSideAutoComplete } from '@/components'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Icon } from '@iconify/react'
+import { Box, Chip, Container, IconButton, Paper, Typography } from '@mui/material'
+import { useRouter } from 'next/router'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { HomeForm, homeSchema } from './home.schemas'
 
 const HeroSection: React.FC = () => {
+    const form = useForm<HomeForm>({
+        defaultValues: {
+            trip_id: null,
+        },
+        resolver: zodResolver(homeSchema),
+    })
+    const router = useRouter()
+
     return (
         <Box
             sx={{
@@ -80,49 +93,204 @@ const HeroSection: React.FC = () => {
                         backdropFilter: 'blur(10px)',
                     }}
                 >
-                    <TextField
-                        fullWidth
+                    <ServerSideAutoComplete<
+                        HomeForm,
+                        { id: number; label: string; location?: string; category?: { name: string }; image?: string },
+                        any
+                    >
+                        control={form.control}
+                        endpoint='trip'
+                        name='trip_id'
+                        label=''
+                        size='medium'
                         placeholder='Cari destinasi impianmu...'
-                        variant='outlined'
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position='end'>
-                                    <IconButton
-                                        edge='end'
-                                        sx={{
-                                            backgroundColor: '#0ea5e9',
-                                            color: 'white',
-                                            '&:hover': {
-                                                backgroundColor: '#0284c7',
-                                            },
-                                            borderRadius: 2,
-                                            p: 1.5,
-                                        }}
-                                    >
-                                        <Icon icon='mdi:magnify' width={24} height={24} />
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                            sx: {
-                                '& .MuiOutlinedInput-notchedOutline': {
-                                    border: 'none',
-                                },
-                                '& .MuiInputBase-input': {
-                                    py: 2,
-                                    px: 3,
-                                    fontSize: '1.1rem',
-                                },
-                            },
+                        formatOptions={response => {
+                            const options = response.data
+                            if (!options) return []
+
+                            return options.map((option: any) => ({
+                                id: option.id,
+                                label: option.name,
+                                location: option.location,
+                                category: option.category,
+                                image: option.image || option.thumbnail || '/default-trip.jpg', // fallback image
+                            }))
                         }}
+                        renderOption={(props, option) => (
+                            <Box
+                                component='li'
+                                {...props}
+                                sx={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    py: 2,
+                                    px: 2,
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s ease',
+                                    '&:hover': {
+                                        backgroundColor: '#f8fafc',
+                                        transform: 'translateY(-1px)',
+                                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                                    },
+                                }}
+                                onClick={() => {
+                                    // Close the autocomplete first
+                                    const autocompleteElement = document.querySelector(
+                                        '[role="combobox"]'
+                                    ) as HTMLInputElement
+                                    if (autocompleteElement) {
+                                        autocompleteElement.blur()
+                                    }
+
+                                    // Navigate to trip detail
+                                    setTimeout(() => {
+                                        router.push(`/trip-detail/${option.id}`)
+                                    }, 100)
+                                }}
+                            >
+                                {/* Trip Image */}
+                                <Box
+                                    sx={{
+                                        width: 60,
+                                        height: 60,
+                                        borderRadius: 2,
+                                        overflow: 'hidden',
+                                        mr: 2,
+                                        flexShrink: 0,
+                                        position: 'relative',
+                                    }}
+                                >
+                                    <img
+                                        src={option.image}
+                                        alt={option.label}
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'cover',
+                                        }}
+                                        onError={e => {
+                                            e.currentTarget.src = '/default-trip.jpg' // fallback on error
+                                        }}
+                                    />
+                                </Box>
+
+                                {/* Trip Details */}
+                                <Box sx={{ flex: 1, minWidth: 0 }}>
+                                    {/* Trip Name */}
+                                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+                                        <Icon
+                                            icon='mdi:map-marker'
+                                            style={{ marginRight: 8, color: '#0ea5e9', fontSize: 16 }}
+                                        />
+                                        <Typography
+                                            variant='body1'
+                                            sx={{
+                                                fontWeight: 600,
+                                                color: '#1f2937',
+                                                fontSize: '0.95rem',
+                                                overflow: 'hidden',
+                                                textOverflow: 'ellipsis',
+                                                whiteSpace: 'nowrap',
+                                            }}
+                                        >
+                                            {option.label}
+                                        </Typography>
+                                    </Box>
+
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ml: 3 }}>
+                                        {option.location && (
+                                            <Box sx={{ display: 'flex', alignItems: 'center', flex: 1, minWidth: 0 }}>
+                                                <Icon
+                                                    icon='mdi:map-marker-outline'
+                                                    style={{ marginRight: 4, color: '#6b7280', fontSize: 12 }}
+                                                />
+                                                <Typography
+                                                    variant='caption'
+                                                    sx={{
+                                                        color: '#6b7280',
+                                                        fontSize: '0.75rem',
+                                                        overflow: 'hidden',
+                                                        textOverflow: 'ellipsis',
+                                                        whiteSpace: 'nowrap',
+                                                    }}
+                                                >
+                                                    {option.location}
+                                                </Typography>
+                                            </Box>
+                                        )}
+                                        {option.category?.name && (
+                                            <Chip
+                                                label={option.category.name}
+                                                size='small'
+                                                sx={{
+                                                    height: 18,
+                                                    fontSize: '0.65rem',
+                                                    backgroundColor: '#eff6ff',
+                                                    color: '#0ea5e9',
+                                                    border: '1px solid #bfdbfe',
+                                                    '& .MuiChip-label': {
+                                                        px: 0.75,
+                                                        py: 0,
+                                                    },
+                                                    flexShrink: 0,
+                                                }}
+                                            />
+                                        )}
+                                    </Box>
+                                </Box>
+
+                                {/* Arrow Icon */}
+                                <Box sx={{ ml: 1, color: '#9ca3af' }}>
+                                    <Icon icon='mdi:chevron-right' style={{ fontSize: 20 }} />
+                                </Box>
+                            </Box>
+                        )}
+                        getOptionLabel={(option: any) => option?.label || ''}
+                        isOptionEqualToValue={(option, value) => option?.id === value?.id}
                         sx={{
                             '& .MuiOutlinedInput-root': {
                                 borderRadius: 4,
+                                backgroundColor: 'white',
+                                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                            },
+                            '& .MuiOutlinedInput-notchedOutline': {
+                                border: 'none',
+                            },
+                            '& .MuiInputBase-input': {
+                                py: 2.5,
+                                px: 3,
+                                fontSize: '1.1rem',
+                                '&::placeholder': {
+                                    color: '#9ca3af',
+                                    opacity: 1,
+                                },
+                            },
+                            '& .MuiAutocomplete-listbox': {
+                                maxHeight: 400,
+                                padding: 1,
+                                '& .MuiAutocomplete-option': {
+                                    minHeight: 76,
+                                    borderRadius: 2,
+                                    marginBottom: 1,
+                                    border: '1px solid #f3f4f6',
+                                    '&:last-child': {
+                                        marginBottom: 0,
+                                    },
+                                    '&[aria-selected="true"]': {
+                                        backgroundColor: '#eff6ff !important',
+                                        borderColor: '#bfdbfe',
+                                    },
+                                },
+                            },
+                            '& .MuiAutocomplete-paper': {
+                                borderRadius: 3,
+                                boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                                border: '1px solid #e5e7eb',
                             },
                         }}
                     />
                 </Paper>
 
-                {/* Stats or Additional Info */}
                 <Box
                     sx={{
                         display: 'flex',

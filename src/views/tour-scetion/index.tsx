@@ -1,112 +1,18 @@
 // components/ToursSection.tsx
-import React from 'react'
-import { Container, Typography, Grid, Box, Button, Paper } from '@mui/material'
+import { useTripParams } from '@/utils/quries/use-destination.query'
 import { Icon } from '@iconify/react'
+import { Box, Button, Container, Grid, Paper, Typography } from '@mui/material'
+import React from 'react'
 import TourCard from './tour-card'
 
 const ToursSection: React.FC = () => {
-    const tours = [
-        {
-            id: '1',
-            title: 'Tur Bromo',
-            image: '/api/placeholder/400/200',
-            price: 375000,
-            duration: '3 Hari',
-            date: '26 Juni 2025',
-            location: 'Jawa Timur',
-            rating: 5.0,
-            reviewCount: 250,
-            type: 'Open Trip' as const,
-            isPopular: true,
-        },
-        {
-            id: '2',
-            title: 'Tur Pulau Tegal Mas',
-            image: '/api/placeholder/400/200',
-            price: 3300000,
-            duration: '2 Hari',
-            date: '26 Juni 2025',
-            location: 'Lampung',
-            rating: 5.0,
-            reviewCount: 250,
-            type: 'Private Trip' as const,
-        },
-        {
-            id: '3',
-            title: 'Tur Tana Toraja',
-            image: '/api/placeholder/400/200',
-            price: 1750000,
-            duration: '4 Hari',
-            date: '26 Juni 2025',
-            location: 'Sulawesi Selatan',
-            rating: 5.0,
-            reviewCount: 250,
-            type: 'Open Trip' as const,
-        },
-        {
-            id: '4',
-            title: 'Tur Candi Borobudur',
-            image: '/api/placeholder/400/200',
-            price: 120000,
-            duration: '1 Hari',
-            date: '26 Juni 2025',
-            location: 'Jawa Tengah',
-            rating: 5.0,
-            reviewCount: 250,
-            type: 'Open Trip' as const,
-        },
-        {
-            id: '5',
-            title: 'Tur Danau Kelimutu',
-            image: '/api/placeholder/400/200',
-            price: 1050000,
-            duration: '3 Hari',
-            date: '26 Juni 2025',
-            location: 'Nusa Tenggara Timur',
-            rating: 5.0,
-            reviewCount: 250,
-            type: 'Open Trip' as const,
-        },
-        {
-            id: '6',
-            title: 'Tur Kawah Ijen',
-            image: '/api/placeholder/400/200',
-            price: 350000,
-            duration: '2 Hari',
-            date: '26 Juni 2025',
-            location: 'Jawa Timur',
-            rating: 5.0,
-            reviewCount: 250,
-            type: 'Open Trip' as const,
-        },
-        {
-            id: '7',
-            title: 'Tur Pink Beach',
-            image: '/api/placeholder/400/200',
-            price: 1397000,
-            duration: '3 Hari',
-            date: '26 Juni 2025',
-            location: 'Nusa Tenggara Timur',
-            rating: 5.0,
-            reviewCount: 250,
-            type: 'Private Trip' as const,
-        },
-        {
-            id: '8',
-            title: 'Tur Nusa Penida',
-            image: '/api/placeholder/400/200',
-            price: 850000,
-            duration: '1 Hari',
-            date: '26 Juni 2025',
-            location: 'Bali',
-            rating: 5.0,
-            reviewCount: 250,
-            type: 'Open Trip' as const,
-        },
-    ]
+    const { data: { data: TripList = [] } = { data: [] } } = useTripParams({
+        pageSize: 8,
+        pageIndex: 1,
+    })
 
     return (
-        <Box sx={{ py: 8, backgroundColor: '#f8fafc' }}>
+        <Box sx={{ py: 8, backgroundColor: '#f8fafc' }} id='explore'>
             <Container maxWidth='xl'>
                 {/* Header Section */}
                 <Box sx={{ mb: 6 }}>
@@ -160,28 +66,14 @@ const ToursSection: React.FC = () => {
                                 Nikmati perjalanan tak terlupakan ke destinasi terbaik Indonesia
                             </Typography>
                         </Box>
-
-                        <Button
-                            variant='text'
-                            endIcon={<Icon icon='mdi:arrow-right' width={20} height={20} />}
-                            sx={{
-                                color: '#0ea5e9',
-                                fontWeight: 'bold',
-                                '&:hover': {
-                                    backgroundColor: 'rgba(14, 165, 233, 0.04)',
-                                },
-                            }}
-                        >
-                            Lihat Semua
-                        </Button>
                     </Box>
                 </Box>
 
                 {/* Tours Grid */}
                 <Grid container spacing={3}>
-                    {tours.map(tour => (
+                    {TripList?.map((tour: any) => (
                         <Grid item xs={12} sm={6} md={4} lg={3} key={tour.id}>
-                            <TourCard {...tour} />
+                            <TourCard tour={tour} />
                         </Grid>
                     ))}
                 </Grid>

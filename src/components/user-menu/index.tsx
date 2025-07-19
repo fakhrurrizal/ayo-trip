@@ -1,14 +1,11 @@
 import { useAuth } from '@/services'
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
-import PersonIcon from '@mui/icons-material/Person'
-import { Badge, Box, MenuItem, Typography } from '@mui/material'
+import { Badge, MenuItem, Typography } from '@mui/material'
 import Avatar from '@mui/material/Avatar'
 import Divider from '@mui/material/Divider'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import Menu from '@mui/material/Menu'
-import { useRouter } from 'next/router'
 import { MouseEvent, useState } from 'react'
 import UserDropdown from './user-dropdown'
 
@@ -25,8 +22,6 @@ interface Props {
 // }))
 
 export const UserMenu = ({ handleLogout }: Props) => {
-    const route = useRouter()
-
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
     const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -108,25 +103,6 @@ export const UserMenu = ({ handleLogout }: Props) => {
                 </div>
 
                 <Divider className='!mt-[5px]' />
-
-                <MenuItem onClick={() => route.push('/profile')} className='!mt-[5px] !rounded-lg !py-[10px]'>
-                    <ListItemIcon>
-                        <PersonIcon />
-                    </ListItemIcon>
-                </MenuItem>
-
-                {user?.is_owner && (
-                    <MenuItem onClick={() => route.push('/my-company')} className=' !rounded-lg !py-[10px]'>
-                        <ListItemIcon>
-                            <AccountBalanceIcon />
-                        </ListItemIcon>
-                        <ListItemText>
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <span>My Company</span>
-                            </Box>
-                        </ListItemText>
-                    </MenuItem>
-                )}
 
                 <Divider className='!mt-[5px]' />
 

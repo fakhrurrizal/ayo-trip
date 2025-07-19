@@ -237,7 +237,7 @@ const PopularDestinationsSection: React.FC = () => {
     }
 
     return (
-        <Box sx={{ py: 8, backgroundColor: '#f8fafc' }}>
+        <Box sx={{ py: 8, backgroundColor: '#f8fafc' }} id='destination'>
             <Container maxWidth='xl'>
                 {/* Header Section */}
                 <Box sx={{ textAlign: 'center', mb: 6 }}>

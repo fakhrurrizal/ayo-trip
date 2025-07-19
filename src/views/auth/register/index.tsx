@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 const signUpSchema = z
@@ -18,8 +19,17 @@ const signUpSchema = z
         phone: z
             .string()
             .min(1, 'Nomor telepon wajib diisi')
-            .regex(/^0\d{9,12}$/, 'Masukkan nomor telepon Indonesia yang valid (diawali 0, 10–13 digit)'),
+            .regex(/^[8][\d-]+$/, 'Masukkan nomor diawali angka 8 dan hanya berisi angka atau tanda hubung')
+            .refine(
+                val => {
+                    const cleaned = val.replace(/[^0-9]/g, '')
 
+                    return cleaned.length >= 9 && cleaned.length <= 12
+                },
+                {
+                    message: 'Nomor telepon harus terdiri dari 9–12 digit angka (tidak termasuk angka 0 di depan)',
+                }
+            ),
         password: z
             .string()
             .min(8, 'Kata sandi minimal terdiri dari 8 karakter')
@@ -33,6 +43,14 @@ const signUpSchema = z
     .refine(data => data.password === data.confirm_password, {
         message: 'Kata sandi dan konfirmasi tidak cocok',
         path: ['confirm_password'],
+    })
+    .transform(data => {
+        const newData: any = { ...data }
+
+        const cleanedPhone = data?.phone?.replace(/-/g, '')
+        newData.phone = `62${cleanedPhone}`
+
+        return newData
     })
 
 type SignUpFormData = z.infer<typeof signUpSchema>
@@ -62,7 +80,7 @@ const SignUpComponent: React.FC = () => {
             await register({ ...data, role_id: 3 })
             router.push('/auth/login')
         } catch (error) {
-            console.error('Submission error:', error)
+            toast.error(`Terjadi kesalahan saat mendaftar. ${error}`)
         }
     }
 
@@ -80,7 +98,7 @@ const SignUpComponent: React.FC = () => {
             {/* Left side - Form */}
             <div
                 className='w-full lg:w-1/2 flex items-center justify-center p-8 relative'
-                style={{ backgroundColor: '#0ea5e9' }}
+                style={{ backgroundColor: '#B6E8FF' }}
             >
                 {/* Decorative Image - Top Right */}
                 <div className='absolute top-0 right-0'>
@@ -121,7 +139,7 @@ const SignUpComponent: React.FC = () => {
                             variant='h3'
                             className='text-center font-bold mb-8'
                             style={{
-                                color: 'white',
+                                color: '#116487',
                                 fontSize: '2.2rem',
                                 fontWeight: '700',
                             }}
@@ -230,7 +248,7 @@ const SignUpComponent: React.FC = () => {
                             <Typography
                                 variant='body2'
                                 style={{
-                                    color: 'white',
+                                    color: '#116487',
                                     fontSize: '14px',
                                 }}
                             >
@@ -239,7 +257,7 @@ const SignUpComponent: React.FC = () => {
                                     component='span'
                                     onClick={() => router.push('/auth/login')}
                                     sx={{
-                                        color: 'white',
+                                        color: '#116487',
                                         textDecoration: 'none',
                                         fontWeight: '500',
                                         cursor: 'pointer',

@@ -71,7 +71,7 @@ const EmailVerificationPageViews = () => {
                         <Box className='flex flex-col items-center gap-4'>
                             {!verificationComplete ? (
                                 <>
-                                    <CircularProgress size={60} sx={{ color: '#0ea5e9' }} />
+                                    <CircularProgress size={60} sx={{ color: '#B6E8FF' }} />
                                     <Typography variant='h6' className='font-semibold text-gray-800'>
                                         Mohon Tunggu
                                     </Typography>
@@ -117,7 +117,7 @@ const EmailVerificationPageViews = () => {
 
                 <div
                     className='w-full lg:w-1/2 flex items-center justify-center p-8 relative'
-                    style={{ backgroundColor: '#0ea5e9' }}
+                    style={{ backgroundColor: '#B6E8FF' }}
                 >
                     <div className='absolute top-0 right-0'>
                         <Image

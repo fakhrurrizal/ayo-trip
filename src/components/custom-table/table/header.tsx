@@ -1,8 +1,7 @@
-import { Fragment, useEffect, useState } from 'react'
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward' // Ascending icon
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward' // Descending icon
-import { useRouter } from 'next/router'
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward' // Ascending icon
 import { Checkbox } from '@mui/material'
+import { Fragment, useState } from 'react'
 
 export type headerTypes = {
     label: string
@@ -34,7 +33,6 @@ const TableHeaderCustomTable = ({
     containerClass,
 }: Props) => {
     const [sortConfig, setSortConfig] = useState<{ field: string; direction: 'asc' | 'desc' | null } | null>(null)
-    const route = useRouter()
 
     const handleSort = (field: string) => {
         let direction: 'asc' | 'desc' | null = 'asc'
@@ -52,32 +50,6 @@ const TableHeaderCustomTable = ({
             onSort(field, direction)
         }
     }
-    useEffect(() => {
-        if (!sortConfig) {
-            route.push(route.asPath.split('?')[0], undefined, {
-                shallow: false,
-            })
-
-            return
-        }
-
-        const queryParams = [
-            { key: 'sort', value: sortConfig?.direction },
-            { key: 'order', value: sortConfig?.field },
-        ]
-            .reduce((acc: any, curr: any) => {
-                if (curr.value) {
-                    acc.push(`${curr?.key}=${curr.value}`)
-                }
-
-                return acc
-            }, [])
-            .join('&')
-
-        route.push(`${route.asPath.split('?')[0]}?${queryParams}`, undefined, {
-            shallow: false,
-        })
-    }, [sortConfig, route])
 
     return (
         <thead

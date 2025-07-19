@@ -75,17 +75,15 @@ const RowOptions = ({ data }: Props) => {
                 }}
                 PaperProps={{ style: { minWidth: '8rem' } }}
             >
-                <Fragment>
-                    <MenuItem sx={{ '& svg': { mr: 1 } }} onClick={toggleEdit}>
-                        <EditIcon sx={{ fontSize: '17px' }} />
-                        Edit
-                    </MenuItem>
+                <MenuItem sx={{ '& svg': { mr: 1 } }} onClick={toggleEdit}>
+                    <EditIcon sx={{ fontSize: '17px' }} />
+                    Edit
+                </MenuItem>
 
-                    <MenuItem sx={{ '& svg': { mr: 1 } }} onClick={toggleDelete}>
-                        <DeleteIcon sx={{ fontSize: '17px' }} />
-                        Hapus
-                    </MenuItem>
-                </Fragment>
+                <MenuItem sx={{ '& svg': { mr: 1 } }} onClick={toggleDelete}>
+                    <DeleteIcon sx={{ fontSize: '17px' }} />
+                    Hapus
+                </MenuItem>
             </Menu>
             {openEdit && <EditTrip toggle={toggleEdit} open={openEdit} data={data} />}
             {openDelete && (

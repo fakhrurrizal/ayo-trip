@@ -111,7 +111,7 @@ const TripListPageViews = () => {
 
     return (
         <>
-            <div className='custom__styled__container'>
+            <div className=''>
                 {/* header section */}
                 <HeaderSectionTableCustom title={'Daftar Trip'} recordsTotal={recordsTotal} />
                 {/* header section */}
@@ -133,35 +133,31 @@ const TripListPageViews = () => {
                                 Array.isArray(TripList) &&
                                 TripList?.map(item => {
                                     return (
-                                        <Fragment key={item?.id}>
-                                            <CustomStyledTableRow>
-                                                <CustomStyledTableHead>{item?.name}</CustomStyledTableHead>
+                                        <CustomStyledTableRow key={item?.id}>
+                                            <CustomStyledTableHead>{item?.name}</CustomStyledTableHead>
 
-                                                <CustomStyledTableData>
-                                                    {item?.trip_category?.name}
-                                                </CustomStyledTableData>
-                                                <CustomStyledTableData>
-                                                    {item?.destination_type?.name}
-                                                </CustomStyledTableData>
-                                                <CustomStyledTableData>{item?.description}</CustomStyledTableData>
-                                                <CustomStyledTableData>
-                                                    {item?.image?.[0] && (
-                                                        <ImageThumbnail
-                                                            src={item.image[0]}
-                                                            alt='Thumbnail'
-                                                            onClick={toggleImage}
-                                                        />
-                                                    )}
-                                                </CustomStyledTableData>
+                                            <CustomStyledTableData>{item?.trip_category?.name}</CustomStyledTableData>
+                                            <CustomStyledTableData>
+                                                {item?.destination_type?.name}
+                                            </CustomStyledTableData>
+                                            <CustomStyledTableData>{item?.description}</CustomStyledTableData>
+                                            <CustomStyledTableData>
+                                                {item?.image?.[0] && (
+                                                    <ImageThumbnail
+                                                        src={item.image[0]}
+                                                        alt='Thumbnail'
+                                                        onClick={toggleImage}
+                                                    />
+                                                )}
+                                            </CustomStyledTableData>
 
-                                                <CustomStyledTableData className='text-center'>
-                                                    <ActiveInactiveRendererTableCustom value={item?.status} />
-                                                </CustomStyledTableData>
+                                            <CustomStyledTableData className='text-center'>
+                                                <ActiveInactiveRendererTableCustom value={item?.status} />
+                                            </CustomStyledTableData>
 
-                                                <CustomStyledTableData className='text-center'>
-                                                    <RowOptions data={item} />
-                                                </CustomStyledTableData>
-                                            </CustomStyledTableRow>
+                                            <CustomStyledTableData className='text-center'>
+                                                <RowOptions data={item} />
+                                            </CustomStyledTableData>
                                             {openImage && (
                                                 <ShowImage
                                                     open={openImage}
@@ -169,7 +165,7 @@ const TripListPageViews = () => {
                                                     image={item.image?.[0] || ''}
                                                 />
                                             )}
-                                        </Fragment>
+                                        </CustomStyledTableRow>
                                     )
                                 })}
                         </tbody>
