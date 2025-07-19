@@ -1,7 +1,7 @@
 // components/ToursSection.tsx
 import { useTripParams } from '@/utils/quries/use-destination.query'
 import { Icon } from '@iconify/react'
-import { Box, Button, Container, Grid, Paper, Typography } from '@mui/material'
+import { Box, Container, Grid, Paper, Typography } from '@mui/material'
 import React from 'react'
 import TourCard from './tour-card'
 
@@ -79,7 +79,7 @@ const ToursSection: React.FC = () => {
                 </Grid>
 
                 {/* Load More Button */}
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
+                {/* <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
                     <Button
                         variant='outlined'
                         size='large'
@@ -99,7 +99,7 @@ const ToursSection: React.FC = () => {
                     >
                         Muat Lebih Banyak
                     </Button>
-                </Box>
+                </Box> */}
             </Container>
         </Box>
     )

@@ -75,6 +75,23 @@ const WhyChooseSection = () => {
         },
     ]
 
+    const generateWhatsAppLink = (category: string) => {
+        const phoneNumber = '6285183266453'
+
+
+        const message = `
+            Halo, saya ingin ${category}
+    
+          `.trim()
+
+        return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
+    }
+
+    const handleConfirmPayment = (category: string) => {
+        const whatsappUrl = generateWhatsAppLink(category)
+        window.open(whatsappUrl, '_blank')
+    }
+
     return (
         <Box sx={{ py: 8, backgroundColor: '#ffffff' }}>
             <Container maxWidth='xl'>
@@ -281,6 +298,7 @@ const WhyChooseSection = () => {
                         <Button
                             variant='contained'
                             size='large'
+                            onClick={() => handleConfirmPayment("Lihat jadwal Open Trip")}
                             startIcon={<Icon icon='mdi:calendar-check' width={20} height={20} />}
                             sx={{
                                 backgroundColor: '#0ea5e9',
@@ -298,6 +316,7 @@ const WhyChooseSection = () => {
                         <Button
                             variant='outlined'
                             size='large'
+                            onClick={() => handleConfirmPayment("Buat jadwal Private Trip")}
                             startIcon={<Icon icon='mdi:account-group' width={20} height={20} />}
                             sx={{
                                 borderColor: '#0ea5e9',

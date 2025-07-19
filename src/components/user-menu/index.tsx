@@ -104,8 +104,6 @@ export const UserMenu = ({ handleLogout }: Props) => {
 
                 <Divider className='!mt-[5px]' />
 
-                <Divider className='!mt-[5px]' />
-
                 <MenuItem onClick={handleLogout} className='!mt-[5px] !rounded-lg !py-[10px]'>
                     <ListItemIcon>
                         <LogoutOutlinedIcon />
