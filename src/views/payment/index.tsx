@@ -18,6 +18,7 @@ import { toast } from 'react-toastify'
 import { formatToIDR } from '@/utils/helpers/format-number.helper'
 import { useRouter } from 'next/router'
 import { useTripID } from '@/utils/quries/use-destination.query'
+import { useAuth } from '@/services'
 
 interface PaymentMethod {
     id: string
@@ -79,6 +80,8 @@ const PaymentMethodPage = () => {
         },
     ]
 
+    const user = useAuth(state => state.value.user)
+
     const selectedMethod = paymentMethods.find(method => method.id === selectedPayment)
     const generateWhatsAppLink = () => {
         const phoneNumber = '6285183266453'
@@ -92,7 +95,9 @@ const PaymentMethodPage = () => {
         const message = `
         Halo, saya ingin melakukan pembayaran untuk tour berikut:
 
-        - Nama Tour: ${tourName}
+        - Nama Lengkap: ${user?.fullname}
+        - Email: ${user?.email}
+        - Nama Paket: ${tourName}
         - Harga: ${price}
         - Durasi: ${duration}
         - Jumlah Peserta: ${participants}
